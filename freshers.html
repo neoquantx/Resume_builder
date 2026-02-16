@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freshers Resume Builder</title>
+    <meta name="description"
+        content="Build a professional resume for freshers. Fill in your details and download as PDF or DOC.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="split-screen">
+
+        <!-- ===== LEFT: Form Panel ===== -->
+        <div class="form-panel">
+            <a href="index.html" class="back-link">&larr; Back to Home</a>
+            <h1>Freshers Resume</h1>
+            <p style="color:#666; margin-bottom:18px; font-size:0.95rem;">Fill in your details — preview updates live on
+                the right.</p>
+
+            <form id="resumeForm">
+
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" placeholder="e.g. Priya Singh">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City &amp; Pincode</label>
+                            <input type="text" id="city" placeholder="e.g. Bangalore – 560037">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" placeholder="e.g. abcdef@cmrit.ac.in">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone *</label>
+                            <input type="tel" id="phone" placeholder="e.g. +91 9999999999">
+                        </div>
+                        <div class="form-group">
+                            <label for="linkedin">LinkedIn</label>
+                            <input type="text" id="linkedin" placeholder="e.g. linkedin.com/in/yourname">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="github">GitHub</label>
+                            <input type="text" id="github" placeholder="e.g. github.com/yourname">
+                        </div>
+                        <div class="form-group">
+                            <label for="leetcode">Leetcode</label>
+                            <input type="text" id="leetcode" placeholder="e.g. leetcode.com/yourname">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Summary -->
+                <div class="form-section">
+                    <h2>Profile Summary</h2>
+                    <div class="form-group">
+                        <label for="profileSummary">Write a brief profile summary</label>
+                        <textarea id="profileSummary"
+                            placeholder="e.g. Tech-driven IT intern with hands-on academic experience in Java, Python, and cloud basics."></textarea>
+                    </div>
+                </div>
+
+                <!-- Academic Details -->
+                <div class="form-section">
+                    <h2>Academic Details</h2>
+                    <div id="academicContainer">
+                        <!-- Masters -->
+                        <div class="entry-block">
+                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;">Post Graduation (if
+                                applicable)</h3>
+                            <div class="form-group">
+                                <label>Degree</label>
+                                <input type="text" name="eduDegree" placeholder="e.g. Masters of Computer Application">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>College Name</label>
+                                    <input type="text" name="eduCollege" placeholder="e.g. XYZ University">
+                                </div>
+                                <div class="form-group">
+                                    <label>CGPA</label>
+                                    <input type="text" name="eduCGPA" placeholder="e.g. 8.5">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year of Graduation</label>
+                                    <input type="text" name="eduYear" placeholder="e.g. 2026">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bachelors -->
+                        <div class="entry-block">
+                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;">Graduation *</h3>
+                            <div class="form-group">
+                                <label>Degree &amp; Branch</label>
+                                <input type="text" name="eduDegree"
+                                    placeholder="e.g. Bachelors of Engineering – Computer Science and Engineering">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>College Name</label>
+                                    <input type="text" name="eduCollege" placeholder="e.g. CMR Institute of Technology">
+                                </div>
+                                <div class="form-group">
+                                    <label>CGPA</label>
+                                    <input type="text" name="eduCGPA" placeholder="e.g. 8.0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year of Graduation</label>
+                                    <input type="text" name="eduYear" placeholder="e.g. 2026">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 12th -->
+                        <div class="entry-block">
+                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;">12th Grade</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>College / School Name</label>
+                                    <input type="text" name="eduCollege" placeholder="e.g. Delhi Public School">
+                                </div>
+                                <div class="form-group">
+                                    <label>CGPA / Percentage</label>
+                                    <input type="text" name="eduCGPA" placeholder="e.g. 92%">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year of Graduation</label>
+                                    <input type="text" name="eduYear" placeholder="e.g. 2022">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 10th -->
+                        <div class="entry-block">
+                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;">10th Grade</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>School Name</label>
+                                    <input type="text" name="eduCollege" placeholder="e.g. Delhi Public School">
+                                </div>
+                                <div class="form-group">
+                                    <label>CGPA / Percentage</label>
+                                    <input type="text" name="eduCGPA" placeholder="e.g. 95%">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year of Graduation</label>
+                                    <input type="text" name="eduYear" placeholder="e.g. 2020">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div class="form-section">
+                    <h2>Technical Skills</h2>
+                    <div class="form-group">
+                        <label for="programmingLangs">Programming Languages</label>
+                        <input type="text" id="programmingLangs" placeholder="e.g. Java, Python, C++">
+                    </div>
+                    <div class="form-group">
+                        <label for="softwareDev">Software Development Skills</label>
+                        <input type="text" id="softwareDev" placeholder="e.g. Agile, SDLC, Git">
+                    </div>
+                    <div class="form-group">
+                        <label for="dbManagement">Database Management</label>
+                        <input type="text" id="dbManagement" placeholder="e.g. MySQL, MongoDB, PostgreSQL">
+                    </div>
+                    <div class="form-group">
+                        <label for="operatingSystems">Operating Systems</label>
+                        <input type="text" id="operatingSystems" placeholder="e.g. Windows, Linux, macOS">
+                    </div>
+                    <div class="form-group">
+                        <label for="cloudTech">Cloud Technologies</label>
+                        <input type="text" id="cloudTech" placeholder="e.g. AWS, Azure, GCP">
+                    </div>
+                    <div class="form-group">
+                        <label for="webTech">Web Technologies</label>
+                        <input type="text" id="webTech" placeholder="e.g. HTML, CSS, JavaScript, React">
+                    </div>
+                    <div class="form-group">
+                        <label for="domainSkills">Domain Based Skills</label>
+                        <input type="text" id="domainSkills" placeholder="e.g. Machine Learning, Data Analysis">
+                    </div>
+                </div>
+
+                <!-- Projects -->
+                <div class="form-section">
+                    <h2>Projects</h2>
+                    <div id="projectsContainer">
+                        <div class="entry-block">
+                            <div class="form-group">
+                                <label>Title of the Project *</label>
+                                <input type="text" name="projectTitle" placeholder="e.g. E-Commerce Website">
+                            </div>
+                            <div class="form-group">
+                                <label>Created / Developed / Utilised / Implemented</label>
+                                <textarea name="projectDesc"
+                                    placeholder="e.g. Developed a full-stack e-commerce platform with user authentication and payment integration"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Tools &amp; Technologies Used</label>
+                                <input type="text" name="projectTech"
+                                    placeholder="e.g. React, Node.js, MongoDB, Stripe API">
+                            </div>
+                            <div class="form-group">
+                                <label>Role (Leader / Front End / Back End)</label>
+                                <input type="text" name="projectRole" placeholder="e.g. Leader / Full Stack">
+                            </div>
+                        </div>
+                        <div class="entry-block">
+                            <button type="button" class="remove-btn"
+                                onclick="this.parentElement.remove(); updatePreview();">Remove</button>
+                            <div class="form-group">
+                                <label>Title of the Project</label>
+                                <input type="text" name="projectTitle" placeholder="e.g. Chat Application">
+                            </div>
+                            <div class="form-group">
+                                <label>Created / Developed / Utilised / Implemented</label>
+                                <textarea name="projectDesc"
+                                    placeholder="Describe what you created/developed"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Tools &amp; Technologies Used</label>
+                                <input type="text" name="projectTech" placeholder="e.g. Python, Flask, Socket.io">
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <input type="text" name="projectRole" placeholder="e.g. Back End">
+                            </div>
+                        </div>
+                        <div class="entry-block">
+                            <button type="button" class="remove-btn"
+                                onclick="this.parentElement.remove(); updatePreview();">Remove</button>
+                            <div class="form-group">
+                                <label>Title of the Project</label>
+                                <input type="text" name="projectTitle" placeholder="e.g. Weather App">
+                            </div>
+                            <div class="form-group">
+                                <label>Created / Developed / Utilised / Implemented</label>
+                                <textarea name="projectDesc"
+                                    placeholder="Describe what you created/developed"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Tools &amp; Technologies Used</label>
+                                <input type="text" name="projectTech" placeholder="e.g. Java, Android Studio">
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <input type="text" name="projectRole" placeholder="e.g. Front End">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addProject()">+ Add Another Project</button>
+                </div>
+
+                <!-- Co-Curricular & Extra-Curricular Activities -->
+                <div class="form-section">
+                    <h2>Co-Curricular &amp; Extra-Curricular Activities</h2>
+                    <div class="form-group">
+                        <label for="hackathons">Hackathons</label>
+                        <input type="text" id="hackathons" placeholder="e.g. Smart India Hackathon 2025, HackCBS">
+                    </div>
+                    <div class="form-group">
+                        <label for="certifications">Certifications</label>
+                        <input type="text" id="certifications"
+                            placeholder="e.g. AWS Certified Cloud Practitioner, Google Data Analytics">
+                    </div>
+                    <div class="form-group">
+                        <label for="patents">Patents / Publications</label>
+                        <input type="text" id="patents"
+                            placeholder="e.g. Published paper on ML in IEEE, Patent pending for XYZ">
+                    </div>
+                </div>
+
+                <!-- Leadership Skills -->
+                <div class="form-section">
+                    <h2>Leadership Skills</h2>
+                    <div id="leadershipContainer">
+                        <div class="entry-block">
+                            <div class="form-group">
+                                <label>Leadership Role / Activity</label>
+                                <input type="text" name="leadershipItem" placeholder="e.g. President of Coding Club">
+                            </div>
+                        </div>
+                        <div class="entry-block">
+                            <button type="button" class="remove-btn"
+                                onclick="this.parentElement.remove(); updatePreview();">Remove</button>
+                            <div class="form-group">
+                                <label>Leadership Role / Activity</label>
+                                <input type="text" name="leadershipItem"
+                                    placeholder="e.g. Captain of College Cricket Team">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addLeadership()">+ Add Another</button>
+                </div>
+
+                <!-- Achievements -->
+                <div class="form-section">
+                    <h2>Achievements</h2>
+                    <div id="achievementsContainer">
+                        <div class="entry-block">
+                            <div class="form-group">
+                                <label>Achievement (Achieved / Won / Secured)</label>
+                                <input type="text" name="achievement"
+                                    placeholder="e.g. Won first place in National Coding Competition 2025">
+                            </div>
+                        </div>
+                        <div class="entry-block">
+                            <button type="button" class="remove-btn"
+                                onclick="this.parentElement.remove(); updatePreview();">Remove</button>
+                            <div class="form-group">
+                                <label>Achievement</label>
+                                <input type="text" name="achievement"
+                                    placeholder="e.g. Secured 99 percentile in GATE 2025">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addAchievement()">+ Add Another Achievement</button>
+                </div>
+
+            </form>
+
+            <!-- Download Buttons -->
+            <div class="download-section">
+                <h2>Download Your Resume</h2>
+                <button class="btn btn-pdf" onclick="downloadPDF()">Download as PDF</button>
+                <button class="btn btn-doc" onclick="downloadDOC()">Download as DOC</button>
+            </div>
+        </div>
+
+        <!-- ===== RIGHT: Live Preview Panel ===== -->
+        <div class="preview-panel">
+            <div class="preview-header">
+                <h2>📄 Live Preview</h2>
+            </div>
+            <div class="preview-wrapper">
+                <div class="resume-preview" id="resumePreview">
+                    <div class="rv-empty">Start typing to see your resume here...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CDN Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.2.3/build/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="freshers.js"></script>
+</body>
+
+</html>

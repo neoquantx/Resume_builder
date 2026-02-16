@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMRIT Student Resume Builder</title>
+    <meta name="description"
+        content="Build a professional resume for CMRIT students. Fill in your details and download as PDF or DOC.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="split-screen">
+
+        <!-- ===== LEFT: Form Panel ===== -->
+        <div class="form-panel">
+            <a href="index.html" class="back-link">&larr; Back to Home</a>
+            <h1>CMRIT Student Resume</h1>
+            <p style="color:#666; margin-bottom:18px; font-size:0.95rem;">Fill in your details — preview updates live on
+                the right.</p>
+
+            <form id="resumeForm">
+
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <div class="personal-info-layout">
+                        <div class="personal-info-left">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" placeholder="e.g. Himanshu Nikam">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address *</label>
+                                <input type="text" id="address"
+                                    placeholder="e.g. CMRIT Boys Hostel, #132 AECS Layout, Kundalahalli, Bengaluru, Karnataka – 560037">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Mobile Number *</label>
+                                <input type="tel" id="phone" placeholder="e.g. +91 8737923714">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Id *</label>
+                                <input type="email" id="email"
+                                    placeholder="e.g. hini23cs@cmrit.ac.in / yourname@gmail.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="linkedin">LinkedIn</label>
+                                <input type="text" id="linkedin"
+                                    placeholder="e.g. https://www.linkedin.com/in/yourname">
+                            </div>
+                            <div class="form-group">
+                                <label for="github">GitHub</label>
+                                <input type="text" id="github" placeholder="e.g. https://github.com/yourname">
+                            </div>
+                            <div class="form-group">
+                                <label for="leetcode">LeetCode</label>
+                                <input type="text" id="leetcode" placeholder="e.g. https://leetcode.com/u/yourname">
+                            </div>
+                        </div>
+                        <div class="personal-info-right">
+                            <label class="photo-upload-area" id="photoUploadArea">
+                                <div class="photo-preview" id="photoPreview">
+                                    <span>Click to upload<br>your photo</span>
+                                </div>
+                                <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)"
+                                    style="display:none;">
+                            </label>
+                            <p style="text-align:center; font-size:0.8rem; color:#888; margin-top:6px;">Passport size
+                                photo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career Objective -->
+                <div class="form-section">
+                    <h2>Career Objective</h2>
+                    <div class="form-group">
+                        <label for="objective">Write a brief career objective</label>
+                        <textarea id="objective"
+                            placeholder="e.g. Seeking a challenging role in software development where I can leverage my technical skills..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="form-section">
+                    <h2>Education</h2>
+                    <h3 style="font-size:1rem; margin-bottom:12px; color:#555;">College</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="college">College</label>
+                            <input type="text" id="college" value="CMR Institute of Technology, Bengaluru" readonly
+                                style="background:#f0f0f0;">
+                        </div>
+                        <div class="form-group">
+                            <label for="branch">Branch *</label>
+                            <input type="text" id="branch" placeholder="e.g. Computer Science & Engineering">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cgpa">CGPA *</label>
+                            <input type="text" id="cgpa" placeholder="e.g. 8.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="yearOfPassing">Year of Passing *</label>
+                            <input type="text" id="yearOfPassing" placeholder="e.g. 2026">
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1rem; margin:16px 0 12px; color:#555;">12th Standard</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="school12">School</label>
+                            <input type="text" id="school12" placeholder="e.g. Delhi Public School">
+                        </div>
+                        <div class="form-group">
+                            <label for="board12">Board</label>
+                            <input type="text" id="board12" placeholder="e.g. CBSE">
+                        </div>
+                        <div class="form-group">
+                            <label for="percentage12">Percentage</label>
+                            <input type="text" id="percentage12" placeholder="e.g. 92%">
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1rem; margin:16px 0 12px; color:#555;">10th Standard</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="school10">School</label>
+                            <input type="text" id="school10" placeholder="e.g. Delhi Public School">
+                        </div>
+                        <div class="form-group">
+                            <label for="board10">Board</label>
+                            <input type="text" id="board10" placeholder="e.g. CBSE">
+                        </div>
+                        <div class="form-group">
+                            <label for="percentage10">Percentage</label>
+                            <input type="text" id="percentage10" placeholder="e.g. 95%">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="form-section">
+                    <h2>Skills</h2>
+                    <div class="form-group">
+                        <label for="technicalSkills">Technical Skills (comma-separated) *</label>
+                        <input type="text" id="technicalSkills" placeholder="e.g. Java, Python, React, MySQL">
+                    </div>
+                    <div class="form-group">
+                        <label for="softSkills">Soft Skills (comma-separated)</label>
+                        <input type="text" id="softSkills" placeholder="e.g. Leadership, Communication, Teamwork">
+                    </div>
+                </div>
+
+                <!-- Projects -->
+                <div class="form-section">
+                    <h2>Projects</h2>
+                    <div id="projectsContainer">
+                        <div class="entry-block">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input type="text" name="projectName" placeholder="e.g. E-Commerce Website">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea name="projectDesc" placeholder="Brief description of the project"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Technologies Used</label>
+                                <input type="text" name="projectTech" placeholder="e.g. React, Node.js, MongoDB">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addProject()">+ Add Another Project</button>
+                </div>
+
+                <!-- Internships -->
+                <div class="form-section">
+                    <h2>Internships</h2>
+                    <div id="internshipsContainer">
+                        <div class="entry-block">
+                            <div class="form-group">
+                                <label>Company</label>
+                                <input type="text" name="internCompany" placeholder="e.g. Google">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <input type="text" name="internRole" placeholder="e.g. Software Intern">
+                                </div>
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" name="internDuration" placeholder="e.g. May 2025 - July 2025">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea name="internDesc" placeholder="What did you work on?"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addInternship()">+ Add Another Internship</button>
+                </div>
+
+                <!-- Certifications -->
+                <div class="form-section">
+                    <h2>Certifications</h2>
+                    <div id="certsContainer">
+                        <div class="entry-block">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Certification Name</label>
+                                    <input type="text" name="certName" placeholder="e.g. AWS Cloud Practitioner">
+                                </div>
+                                <div class="form-group">
+                                    <label>Issuing Organization</label>
+                                    <input type="text" name="certOrg" placeholder="e.g. Amazon Web Services">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addCert()">+ Add Another Certification</button>
+                </div>
+
+                <!-- Extracurricular Activities -->
+                <div class="form-section">
+                    <h2>Extracurricular Activities</h2>
+                    <div id="extracurricularContainer">
+                        <div class="entry-block">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Activity</label>
+                                    <input type="text" name="extraActivity" placeholder="e.g. Coding Club">
+                                </div>
+                                <div class="form-group">
+                                    <label>Role / Description</label>
+                                    <input type="text" name="extraRole" placeholder="e.g. Vice President">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addExtra()">+ Add Another Activity</button>
+                </div>
+
+                <!-- Languages -->
+                <div class="form-section">
+                    <h2>Languages</h2>
+                    <div id="languagesContainer">
+                        <div class="entry-block">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Language</label>
+                                    <input type="text" name="langName" placeholder="e.g. English">
+                                </div>
+                                <div class="form-group">
+                                    <label>Proficiency</label>
+                                    <select name="langProf">
+                                        <option value="Native">Native</option>
+                                        <option value="Fluent">Fluent</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Basic">Basic</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addLanguage()">+ Add Another Language</button>
+                </div>
+
+                <!-- Personal Details -->
+                <div class="form-section">
+                    <h2>Personal Details</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="text" id="dob" placeholder="e.g. 1st January, 2004">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="">-- Select --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nationality">Nationality</label>
+                            <input type="text" id="nationality" placeholder="e.g. Indian">
+                        </div>
+                        <div class="form-group">
+                            <label for="permanentAddress">Permanent Address</label>
+                            <input type="text" id="permanentAddress"
+                                placeholder="e.g. Ck 4/14 Thatheri Bazar, Bulanala, Varanasi, Uttar Pradesh">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="linguisticCompetency">Linguistic Competency</label>
+                        <input type="text" id="linguisticCompetency" placeholder="e.g. English, Hindi, Marathi">
+                    </div>
+                    <div class="form-group">
+                        <label for="hobbies">Hobbies</label>
+                        <input type="text" id="hobbies" placeholder="e.g. Cooking, Travelling, Reading, Playing">
+                    </div>
+                </div>
+
+            </form>
+
+            <!-- Download Buttons -->
+            <div class="download-section">
+                <h2>Download Your Resume</h2>
+                <button class="btn btn-pdf" onclick="downloadPDF()">Download as PDF</button>
+                <button class="btn btn-doc" onclick="downloadDOC()">Download as DOC</button>
+            </div>
+        </div>
+
+        <!-- ===== RIGHT: Live Preview Panel ===== -->
+        <div class="preview-panel">
+            <div class="preview-header">
+                <h2>📄 Live Preview</h2>
+            </div>
+            <div class="preview-wrapper">
+                <div class="resume-preview" id="resumePreview">
+                    <div class="rv-empty">Start typing to see your resume here...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CDN Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.2.3/build/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="cmrit.js"></script>
+</body>
+
+</html>
