@@ -174,13 +174,13 @@ function updatePreview() {
 
     // === PROFILE SUMMARY ===
     if (data.profileSummary) {
-        html += '<div class="rv-section-title">Profile Summary</div>';
-        html += '<div>' + esc(data.profileSummary) + '</div>';
+        html += '<div class="rv-section-title">PROFILE SUMMARY</div>';
+        html += '<div style="text-align: justify;">' + esc(data.profileSummary) + '</div>';
     }
 
     // === ACADEMIC DETAILS ===
     if (data.academics.length) {
-        html += '<div class="rv-section-title">Academic Details</div>';
+        html += '<div class="rv-section-title">ACADEMIC DETAILS</div>';
         data.academics.forEach(a => {
             const degreeText = a.degree || a.label;
             html += '<div class="rv-bullet"><b>' + esc(degreeText) + '</b></div>';
@@ -198,7 +198,7 @@ function updatePreview() {
     const hasSkills = data.programmingLangs || data.softwareDev || data.dbManagement ||
         data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills;
     if (hasSkills) {
-        html += '<div class="rv-section-title">Technical Skills</div>';
+        html += '<div class="rv-section-title">TECHNICAL SKILLS</div>';
         if (data.programmingLangs) html += '<div class="rv-bullet">Programming Languages: ' + esc(data.programmingLangs) + '</div>';
         if (data.softwareDev) html += '<div class="rv-bullet">Software Development Skills: ' + esc(data.softwareDev) + '</div>';
         if (data.dbManagement) html += '<div class="rv-bullet">Database Management: ' + esc(data.dbManagement) + '</div>';
@@ -210,7 +210,7 @@ function updatePreview() {
 
     // === PROJECTS ===
     if (data.projects.length) {
-        html += '<div class="rv-section-title">Projects</div>';
+        html += '<div class="rv-section-title">PROJECTS</div>';
         data.projects.forEach(p => {
             html += '<div class="rv-bullet"><b>' + esc(p.title) + '</b></div>';
             if (p.desc) html += '<div class="rv-sub-bullet">' + esc(p.desc) + '</div>';
@@ -222,7 +222,7 @@ function updatePreview() {
     // === CO-CURRICULAR & EXTRA-CURRICULAR ===
     const hasActivities = data.hackathons || data.certifications || data.patents;
     if (hasActivities) {
-        html += '<div class="rv-section-title">Co-Curricular & Extra-Curricular Activities</div>';
+        html += '<div class="rv-section-title">CO-CURRICULAR & EXTRA-CURRICULAR ACTIVITIES</div>';
         if (data.hackathons) html += '<div class="rv-bullet">Hackathons: ' + esc(data.hackathons) + '</div>';
         if (data.certifications) html += '<div class="rv-bullet">Certifications: ' + esc(data.certifications) + '</div>';
         if (data.patents) html += '<div class="rv-bullet">Patents/Publications: ' + esc(data.patents) + '</div>';
@@ -230,7 +230,7 @@ function updatePreview() {
 
     // === LEADERSHIP SKILLS ===
     if (data.leadership.length) {
-        html += '<div class="rv-section-title">Leadership Skills</div>';
+        html += '<div class="rv-section-title">LEADERSHIP SKILLS</div>';
         data.leadership.forEach(l => {
             html += '<div class="rv-bullet">' + esc(l) + '</div>';
         });
@@ -238,7 +238,7 @@ function updatePreview() {
 
     // === ACHIEVEMENTS ===
     if (data.achievements.length) {
-        html += '<div class="rv-section-title">Achievements</div>';
+        html += '<div class="rv-section-title">ACHIEVEMENTS</div>';
         data.achievements.forEach(a => {
             html += '<div class="rv-bullet">' + esc(a) + '</div>';
         });
@@ -283,13 +283,12 @@ function downloadPDF() {
     function addSectionTitle(title) {
         checkPage(14);
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
+        doc.setFont('times', 'bold');
         doc.text(title.toUpperCase(), margin, y);
         y += 1;
-        doc.setDrawColor(41, 128, 185);
-        doc.setLineWidth(0.7);
-        doc.line(margin, y, pageWidth - margin, y);
         doc.setDrawColor(0, 0, 0);
+        doc.setLineWidth(0.5);
+        doc.line(margin, y, pageWidth - margin, y);
         y += 6;
     }
 
@@ -297,8 +296,8 @@ function downloadPDF() {
         if (!text) return;
         const x = margin + (indent || 0);
         const maxWidth = contentWidth - (indent || 0);
-        doc.setFontSize(10);
-        doc.setFont('helvetica', bold ? 'bold' : 'normal');
+        doc.setFontSize(11.5);
+        doc.setFont('times', bold ? 'bold' : 'normal');
         const lines = doc.splitTextToSize(text, maxWidth);
         checkPage(lines.length * 5 + 2);
         doc.text(lines, x, y);
@@ -333,7 +332,7 @@ function downloadPDF() {
 
     // Name Header
     doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
+    doc.setFont('times', 'bold');
     doc.text(data.fullName.toUpperCase(), pageWidth / 2, y, { align: 'center' });
     y += 6;
 
@@ -346,8 +345,8 @@ function downloadPDF() {
     if (data.github) contactParts.push(data.github);
     if (data.leetcode) contactParts.push(data.leetcode);
     if (contactParts.length) {
-        doc.setFontSize(8.5);
-        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setFont('times', 'normal');
         const contactLine = contactParts.join(' | ');
         const contactLines = doc.splitTextToSize(contactLine, contentWidth);
         contactLines.forEach(line => {
@@ -456,15 +455,15 @@ function downloadDOC() {
 
     function sectionHeading(text) {
         return new Paragraph({
-            children: [new TextRun({ text: text.toUpperCase(), bold: true, size: 22, font: 'Arial' })],
+            children: [new TextRun({ text: text.toUpperCase(), bold: true, size: 24, font: 'Times New Roman' })],
             spacing: { before: 240, after: 80 },
-            border: { bottom: { style: BorderStyle.SINGLE, size: 2, color: '2980B9' } },
+            border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: '000000' } },
         });
     }
 
     function bulletPara(text, bold) {
         return new Paragraph({
-            children: [new TextRun({ text, size: 20, font: 'Arial', bold: bold || false })],
+            children: [new TextRun({ text, size: 23, font: 'Times New Roman', bold: bold || false })],
             spacing: { after: 40 },
             bullet: { level: 0 },
         });
@@ -472,7 +471,7 @@ function downloadDOC() {
 
     function subBulletPara(text) {
         return new Paragraph({
-            children: [new TextRun({ text, size: 19, font: 'Arial' })],
+            children: [new TextRun({ text, size: 22, font: 'Times New Roman' })],
             spacing: { after: 30 },
             bullet: { level: 1 },
         });
@@ -480,7 +479,7 @@ function downloadDOC() {
 
     function normalPara(text, options = {}) {
         return new Paragraph({
-            children: [new TextRun({ text, size: 20, font: 'Arial', bold: options.bold || false })],
+            children: [new TextRun({ text, size: 23, font: 'Times New Roman', bold: options.bold || false })],
             spacing: { after: 60 },
             indent: options.indent ? { left: 360 } : undefined,
         });
@@ -488,7 +487,7 @@ function downloadDOC() {
 
     // Name
     children.push(new Paragraph({
-        children: [new TextRun({ text: data.fullName.toUpperCase(), bold: true, size: 28, font: 'Arial' })],
+        children: [new TextRun({ text: data.fullName.toUpperCase(), bold: true, size: 36, font: 'Times New Roman' })],
         alignment: AlignmentType.CENTER,
         spacing: { after: 40 },
     }));
@@ -503,7 +502,7 @@ function downloadDOC() {
     if (data.leetcode) contactParts.push(data.leetcode);
     if (contactParts.length) {
         children.push(new Paragraph({
-            children: [new TextRun({ text: contactParts.join(' | '), size: 18, font: 'Arial' })],
+            children: [new TextRun({ text: contactParts.join(' | '), size: 20, font: 'Times New Roman' })],
             alignment: AlignmentType.CENTER,
             spacing: { after: 160 },
         }));

@@ -256,13 +256,13 @@ function updatePreview() {
     // === HEADER: Name + Photo ===
     html += '<div class="rv-photo-header">';
     html += '<div class="rv-left">';
-    if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName) + '</div>';
-    if (data.address) html += '<div class="rv-contact"><b>Address:</b> ' + esc(data.address) + '</div>';
-    if (data.phone) html += '<div class="rv-contact"><b>Mobile Number:</b> ' + esc(data.phone) + '</div>';
-    if (data.email) html += '<div class="rv-contact"><b>Email Id:</b> ' + esc(data.email) + '</div>';
-    if (data.linkedin) html += '<div class="rv-contact"><b>LinkedIn:</b> <a href="' + esc(data.linkedin) + '">' + esc(data.linkedin) + '</a></div>';
-    if (data.github) html += '<div class="rv-contact"><b>GitHub:</b> <a href="' + esc(data.github) + '">' + esc(data.github) + '</a></div>';
-    if (data.leetcode) html += '<div class="rv-contact"><b>LeetCode:</b> <a href="' + esc(data.leetcode) + '">' + esc(data.leetcode) + '</a></div>';
+    if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName.toUpperCase()) + '</div>';
+    if (data.address) html += '<div class="rv-contact"><b>Address</b>: ' + esc(data.address) + '</div>';
+    if (data.phone) html += '<div class="rv-contact"><b>Mobile Number</b>: ' + esc(data.phone) + '</div>';
+    if (data.email) html += '<div class="rv-contact"><b>Email Id</b>: ' + esc(data.email) + '</div>';
+    if (data.linkedin) html += '<div class="rv-contact"><b>LinkedIn</b>: <a href="' + esc(data.linkedin) + '">' + esc(data.linkedin) + '</a></div>';
+    if (data.github) html += '<div class="rv-contact"><b>GitHub</b>: <a href="' + esc(data.github) + '">' + esc(data.github) + '</a></div>';
+    if (data.leetcode) html += '<div class="rv-contact"><b>LeetCode</b>: <a href="' + esc(data.leetcode) + '">' + esc(data.leetcode) + '</a></div>';
     html += '</div>';
     if (data.photo) {
         html += '<img class="rv-photo" src="' + data.photo + '" alt="Photo">';
@@ -271,14 +271,14 @@ function updatePreview() {
 
     // === CAREER OBJECTIVE ===
     if (data.objective) {
-        html += '<div class="rv-section-title">Career Objective</div>';
-        html += '<div>' + esc(data.objective) + '</div>';
+        html += '<div class="rv-section-title">CAREER OBJECTIVE</div>';
+        html += '<div style="text-align: justify;">' + esc(data.objective) + '</div>';
     }
 
     // === EDUCATION ===
     const hasEdu = data.college || data.school12 || data.school10;
     if (hasEdu) {
-        html += '<div class="rv-section-title">Education</div>';
+        html += '<div class="rv-section-title">EDUCATION</div>';
         if (data.college) {
             html += '<div class="rv-entry-title">' + esc(data.branch) + ' — ' + esc(data.college) + '</div>';
             let parts = [];
@@ -287,14 +287,14 @@ function updatePreview() {
             if (parts.length) html += '<div class="rv-entry-detail">' + parts.join('  |  ') + '</div>';
         }
         if (data.school12) {
-            html += '<div class="rv-entry-title">12th — ' + esc(data.school12) + '</div>';
+            html += '<div class="rv-entry-title">Grade 12 — ' + esc(data.school12) + '</div>';
             let d12 = [];
             if (data.board12) d12.push('Board: ' + esc(data.board12));
             if (data.percentage12) d12.push('Percentage: ' + esc(data.percentage12));
             if (d12.length) html += '<div class="rv-entry-detail">' + d12.join('  |  ') + '</div>';
         }
         if (data.school10) {
-            html += '<div class="rv-entry-title">10th — ' + esc(data.school10) + '</div>';
+            html += '<div class="rv-entry-title">Grade 10 — ' + esc(data.school10) + '</div>';
             let d10 = [];
             if (data.board10) d10.push('Board: ' + esc(data.board10));
             if (data.percentage10) d10.push('Percentage: ' + esc(data.percentage10));
@@ -304,16 +304,16 @@ function updatePreview() {
 
     // === SKILLS ===
     if (data.technicalSkills || data.softSkills) {
-        html += '<div class="rv-section-title">Skills</div>';
+        html += '<div class="rv-section-title">SKILLS</div>';
         if (data.technicalSkills) html += '<div class="rv-bullet">Technical: ' + esc(data.technicalSkills) + '</div>';
         if (data.softSkills) html += '<div class="rv-bullet">Soft Skills: ' + esc(data.softSkills) + '</div>';
     }
 
     // === PROJECTS ===
     if (data.projects.length) {
-        html += '<div class="rv-section-title">Projects</div>';
+        html += '<div class="rv-section-title">PROJECTS</div>';
         data.projects.forEach(p => {
-            html += '<div class="rv-entry-title">' + esc(p.name) + '</div>';
+            html += '<div class="rv-bullet"><b>' + esc(p.name) + '</b></div>';
             if (p.tech) html += '<div class="rv-sub-bullet">Technologies: ' + esc(p.tech) + '</div>';
             if (p.desc) html += '<div class="rv-sub-bullet">' + esc(p.desc) + '</div>';
         });
@@ -321,9 +321,9 @@ function updatePreview() {
 
     // === INTERNSHIPS ===
     if (data.internships.length) {
-        html += '<div class="rv-section-title">Internships</div>';
+        html += '<div class="rv-section-title">INTERNSHIPS</div>';
         data.internships.forEach(i => {
-            html += '<div class="rv-entry-title">' + esc(i.role) + ' — ' + esc(i.company) + '</div>';
+            html += '<div class="rv-bullet"><b>' + esc(i.role) + ' — ' + esc(i.company) + '</b></div>';
             if (i.duration) html += '<div class="rv-sub-bullet">' + esc(i.duration) + '</div>';
             if (i.desc) html += '<div class="rv-sub-bullet">' + esc(i.desc) + '</div>';
         });
@@ -331,7 +331,7 @@ function updatePreview() {
 
     // === CERTIFICATIONS ===
     if (data.certifications.length) {
-        html += '<div class="rv-section-title">Certifications</div>';
+        html += '<div class="rv-section-title">CERTIFICATIONS</div>';
         data.certifications.forEach(c => {
             html += '<div class="rv-bullet">' + esc(c.name) + (c.org ? ' — ' + esc(c.org) : '') + '</div>';
         });
@@ -339,7 +339,7 @@ function updatePreview() {
 
     // === EXTRACURRICULAR ===
     if (data.extracurricular.length) {
-        html += '<div class="rv-section-title">Extracurricular Activities</div>';
+        html += '<div class="rv-section-title">CO-CURRICULAR ACTIVITIES</div>';
         data.extracurricular.forEach(e => {
             html += '<div class="rv-bullet">' + esc(e.activity) + (e.role ? ' — ' + esc(e.role) : '') + '</div>';
         });
@@ -347,7 +347,7 @@ function updatePreview() {
 
     // === LANGUAGES ===
     if (data.languages.length) {
-        html += '<div class="rv-section-title">Languages</div>';
+        html += '<div class="rv-section-title">LANGUAGES</div>';
         data.languages.forEach(l => {
             html += '<div class="rv-bullet">' + esc(l.name) + ' — ' + esc(l.prof) + '</div>';
         });
@@ -356,7 +356,7 @@ function updatePreview() {
     // === PERSONAL DETAILS ===
     const hasPersonal = data.dob || data.gender || data.nationality || data.permanentAddress || data.linguisticCompetency || data.hobbies;
     if (hasPersonal) {
-        html += '<div class="rv-section-title">Personal Details</div>';
+        html += '<div class="rv-section-title">PERSONAL DETAILS</div>';
         if (data.dob) html += '<div class="rv-labeled"><span class="rv-label">Date of Birth</span><span>: ' + esc(data.dob) + '</span></div>';
         if (data.gender) html += '<div class="rv-labeled"><span class="rv-label">Gender</span><span>: ' + esc(data.gender) + '</span></div>';
         if (data.nationality) html += '<div class="rv-labeled"><span class="rv-label">Nationality</span><span>: ' + esc(data.nationality) + '</span></div>';
@@ -405,13 +405,12 @@ function downloadPDF() {
     function addSectionTitle(title) {
         checkPage(14);
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
+        doc.setFont('times', 'bold');
         doc.text(title.toUpperCase(), margin, y);
         y += 1;
-        doc.setDrawColor(41, 128, 185);
-        doc.setLineWidth(0.7);
-        doc.line(margin, y, pageWidth - margin, y);
         doc.setDrawColor(0, 0, 0);
+        doc.setLineWidth(0.5);
+        doc.line(margin, y, pageWidth - margin, y);
         y += 6;
     }
 
@@ -419,8 +418,8 @@ function downloadPDF() {
         if (!text) return;
         const x = margin + (indent || 0);
         const maxWidth = contentWidth - (indent || 0);
-        doc.setFontSize(10);
-        doc.setFont('helvetica', bold ? 'bold' : 'normal');
+        doc.setFontSize(11.5);
+        doc.setFont('times', bold ? 'bold' : 'normal');
         const lines = doc.splitTextToSize(text, maxWidth);
         checkPage(lines.length * 5 + 2);
         doc.text(lines, x, y);
@@ -430,11 +429,11 @@ function downloadPDF() {
     function addLabeledLine(label, value) {
         if (!value) return;
         checkPage(7);
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11.5);
+        doc.setFont('times', 'bold');
         doc.text(label, margin, y);
         const labelWidth = doc.getTextWidth(label + ' ');
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('times', 'normal');
         doc.text(value, margin + labelWidth, y);
         y += 5;
     }
@@ -444,8 +443,8 @@ function downloadPDF() {
     const photoHeight = 36;
 
     doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text(data.fullName, margin, y);
+    doc.setFont('times', 'bold');
+    doc.text(data.fullName.toUpperCase(), margin, y);
     const nameStartY = y;
     y += 6;
 
@@ -453,33 +452,33 @@ function downloadPDF() {
     if (data.phone) addLabeledLine('Mobile Number:', data.phone);
     if (data.email) addLabeledLine('Email Id:', data.email);
     if (data.linkedin) {
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11.5);
+        doc.setFont('times', 'bold');
         doc.text('LinkedIn: ', margin, y);
         const lw = doc.getTextWidth('LinkedIn: ');
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('times', 'normal');
         doc.setTextColor(41, 128, 185);
         doc.text(data.linkedin, margin + lw, y);
         doc.setTextColor(0, 0, 0);
         y += 5;
     }
     if (data.github) {
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11.5);
+        doc.setFont('times', 'bold');
         doc.text('GitHub: ', margin, y);
         const gw = doc.getTextWidth('GitHub: ');
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('times', 'normal');
         doc.setTextColor(41, 128, 185);
         doc.text(data.github, margin + gw, y);
         doc.setTextColor(0, 0, 0);
         y += 5;
     }
     if (data.leetcode) {
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11.5);
+        doc.setFont('times', 'bold');
         doc.text('LeetCode: ', margin, y);
         const lcw = doc.getTextWidth('LeetCode: ');
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('times', 'normal');
         doc.setTextColor(41, 128, 185);
         doc.text(data.leetcode, margin + lcw, y);
         doc.setTextColor(0, 0, 0);
@@ -621,33 +620,33 @@ function downloadDOC() {
 
     function sectionHeading(text) {
         return new Paragraph({
-            children: [new TextRun({ text: text.toUpperCase(), bold: true, size: 22, font: 'Arial' })],
+            children: [new TextRun({ text: text.toUpperCase(), bold: true, size: 24, font: 'Times New Roman' })],
             spacing: { before: 240, after: 80 },
-            border: { bottom: { style: BorderStyle.SINGLE, size: 2, color: '2980B9' } },
+            border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: '000000' } },
         });
     }
 
     function normalPara(text, options = {}) {
         return new Paragraph({
-            children: [new TextRun({ text, size: 20, font: 'Arial', bold: options.bold || false })],
+            children: [new TextRun({ text, size: 23, font: 'Times New Roman', bold: options.bold || false })],
             spacing: { after: 60 },
             indent: options.indent ? { left: 360 } : undefined,
         });
     }
 
     function labeledPara(label, value, isLink) {
-        const runs = [new TextRun({ text: label, bold: true, size: 20, font: 'Arial' })];
+        const runs = [new TextRun({ text: label, bold: true, size: 23, font: 'Times New Roman' })];
         if (isLink) {
-            runs.push(new TextRun({ text: value, size: 20, font: 'Arial', color: '2980B9' }));
+            runs.push(new TextRun({ text: value, size: 23, font: 'Times New Roman', color: '2980B9' }));
         } else {
-            runs.push(new TextRun({ text: value, size: 20, font: 'Arial' }));
+            runs.push(new TextRun({ text: value, size: 23, font: 'Times New Roman' }));
         }
         return new Paragraph({ children: runs, spacing: { after: 40 } });
     }
 
     // Name
     children.push(new Paragraph({
-        children: [new TextRun({ text: data.fullName, bold: true, size: 28, font: 'Arial' })],
+        children: [new TextRun({ text: data.fullName.toUpperCase(), bold: true, size: 32, font: 'Times New Roman' })],
         spacing: { after: 40 },
     }));
 

@@ -162,23 +162,24 @@ body {
 .resume-preview {
     padding: 30px 28px;
     font-family: 'Times New Roman', Times, serif;
-    font-size: 11px;
-    line-height: 1.5;
+    font-size: 11.5px;
+    line-height: 1.15;
     color: #222;
 }
 
 .resume-preview .rv-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     text-align: left;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
 }
 
 .resume-preview .rv-contact {
-    font-size: 10px;
+    font-size: 11px;
     color: #444;
     margin-bottom: 2px;
-    line-height: 1.4;
+    line-height: 1.15;
 }
 
 .resume-preview .rv-contact a {
@@ -190,46 +191,51 @@ body {
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
-    border-bottom: 2px solid #2980B9;
+    border-bottom: 1px solid #000;
     padding-bottom: 2px;
-    margin: 12px 0 6px 0;
+    margin: 10px 0 6px 0;
     color: #000;
 }
 
 .resume-preview .rv-entry-title {
     font-weight: bold;
-    margin-bottom: 1px;
+    margin-bottom: 2px;
+    font-size: 11.5px;
 }
 
 .resume-preview .rv-entry-detail {
-    margin-left: 12px;
+    margin-left: 14px;
     color: #444;
+    font-size: 11px;
 }
 
 .resume-preview .rv-bullet {
-    padding-left: 14px;
+    padding-left: 16px;
     position: relative;
-    margin-bottom: 1px;
+    margin-bottom: 2px;
+    text-indent: 0;
 }
 
 .resume-preview .rv-bullet::before {
     content: '•';
     position: absolute;
-    left: 2px;
+    left: 0;
+    font-weight: bold;
 }
 
 .resume-preview .rv-sub-bullet {
-    padding-left: 28px;
+    padding-left: 16px;
     position: relative;
-    margin-bottom: 1px;
+    margin-bottom: 2px;
     color: #444;
+    margin-left: 16px;
 }
 
 .resume-preview .rv-sub-bullet::before {
     content: '○';
     position: absolute;
-    left: 14px;
-    font-size: 9px;
+    left: 0;
+    font-size: 10px;
 }
 
 .resume-preview .rv-labeled {
@@ -256,7 +262,7 @@ body {
 .resume-preview .rv-photo-header .rv-photo {
     width: 80px;
     height: 96px;
-    border: 1px solid #ccc;
+    border: 0.25pt solid #000;
     object-fit: cover;
     flex-shrink: 0;
 }
