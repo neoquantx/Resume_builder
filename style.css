@@ -165,6 +165,8 @@ body {
     font-size: 11.5px;
     line-height: 1.15;
     color: #222;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .resume-preview .rv-name {
@@ -191,10 +193,13 @@ body {
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
-    border-bottom: 1px solid #000;
     padding-bottom: 2px;
-    margin: 10px 0 6px 0;
+    margin: 0 0 6px 0;
     color: #000;
+}
+
+.resume-preview .rv-objective {
+    margin: 0 0 0 0;
 }
 
 .resume-preview .rv-entry-title {
@@ -255,16 +260,31 @@ body {
     align-items: flex-start;
 }
 
-.resume-preview .rv-photo-header .rv-left {
+.resume-preview .rv-contact-photo-wrapper {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.resume-preview .rv-contacts {
     flex: 1;
 }
 
-.resume-preview .rv-photo-header .rv-photo {
+.resume-preview .rv-photo {
     width: 80px;
-    height: 96px;
+    height: auto;
     border: 0.25pt solid #000;
     object-fit: cover;
     flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+.resume-preview .rv-divider {
+    border: none;
+    border-top: 1px solid #000;
+    margin: 0;
+    padding: 0;
 }
 
 .resume-preview .rv-empty {
