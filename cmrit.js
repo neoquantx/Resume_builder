@@ -253,10 +253,12 @@ function updatePreview() {
 
     let html = '';
 
-    // === HEADER: Name + Photo ===
-    html += '<div class="rv-photo-header">';
-    html += '<div class="rv-left">';
+    // === HEADER: Name ===
     if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName.toUpperCase()) + '</div>';
+
+    // === CONTACT + PHOTO (parallel) ===
+    html += '<div class="rv-contact-photo-wrapper">';
+    html += '<div class="rv-contacts">';
     if (data.address) html += '<div class="rv-contact"><b>Address</b>: ' + esc(data.address) + '</div>';
     if (data.phone) html += '<div class="rv-contact"><b>Mobile Number</b>: ' + esc(data.phone) + '</div>';
     if (data.email) html += '<div class="rv-contact"><b>Email Id</b>: ' + esc(data.email) + '</div>';
@@ -269,16 +271,19 @@ function updatePreview() {
     }
     html += '</div>';
 
+    html += '<hr class="rv-divider">';
+
     // === CAREER OBJECTIVE ===
     if (data.objective) {
         html += '<div class="rv-section-title">CAREER OBJECTIVE</div>';
-        html += '<div style="text-align: justify;">' + esc(data.objective) + '</div>';
+        html += '<div class="rv-objective" style="text-align: justify;">' + esc(data.objective) + '</div>';
+        html += '<hr class="rv-divider">';
     }
 
     // === EDUCATION ===
     const hasEdu = data.college || data.school12 || data.school10;
     if (hasEdu) {
-        html += '<div class="rv-section-title">EDUCATION</div>';
+        html += '<div class="rv-section-title">EDUCATION QUALIFICATION</div>';
         if (data.college) {
             html += '<div class="rv-entry-title">' + esc(data.branch) + ' — ' + esc(data.college) + '</div>';
             let parts = [];
