@@ -166,7 +166,6 @@ function collectData() {
     data.board12 = document.getElementById('board12').value.trim();
     data.percentage12 = document.getElementById('percentage12').value.trim();
     data.school10 = document.getElementById('school10').value.trim();
-    data.board10 = document.getElementById('board10').value.trim();
     data.percentage10 = document.getElementById('percentage10').value.trim();
 
     // Skills
@@ -285,25 +284,32 @@ function updatePreview() {
     if (hasEdu) {
         html += '<div class="rv-section-title">EDUCATION QUALIFICATION</div>';
         if (data.college) {
-            html += '<div class="rv-entry-title">' + esc(data.branch) + ' — ' + esc(data.college) + '</div>';
+            html += '<div class="rv-bullet"><b>Bachelor of Engineering - ' + esc(data.branch) + '</b></div>';
+            html += '<div class="rv-sub-bullet">' + esc(data.college) + '</div>';
             let parts = [];
             if (data.cgpa) parts.push('CGPA: ' + esc(data.cgpa));
-            if (data.yearOfPassing) parts.push('Year of Passing: ' + esc(data.yearOfPassing));
-            if (parts.length) html += '<div class="rv-entry-detail">' + parts.join('  |  ') + '</div>';
+            if (data.yearOfPassing) parts.push(esc(data.yearOfPassing) + '(Pursuing)');
+            if (parts.length) html += '<div class="rv-sub-bullet">' + parts.join(', ') + '</div>';
         }
         if (data.school12) {
-            html += '<div class="rv-entry-title">Grade 12 — ' + esc(data.school12) + '</div>';
-            let d12 = [];
-            if (data.board12) d12.push('Board: ' + esc(data.board12));
-            if (data.percentage12) d12.push('Percentage: ' + esc(data.percentage12));
-            if (d12.length) html += '<div class="rv-entry-detail">' + d12.join('  |  ') + '</div>';
+            let d12Title = '12th Grade';
+            if (data.board12) d12Title += ' - ' + esc(data.board12);
+            html += '<div class="rv-bullet">' + d12Title + '</div>';
+            let d12School = [];
+            if (data.school12) d12School.push(esc(data.school12));
+            if (d12School.length) html += '<div class="rv-sub-bullet">' + d12School.join(', ') + '</div>';
+            let d12Percent = [];
+            if (data.percentage12) d12Percent.push('Percentage: ' + esc(data.percentage12));
+            if (d12Percent.length) html += '<div class="rv-sub-bullet">' + d12Percent.join(', ') + '</div>';
         }
         if (data.school10) {
-            html += '<div class="rv-entry-title">Grade 10 — ' + esc(data.school10) + '</div>';
-            let d10 = [];
-            if (data.board10) d10.push('Board: ' + esc(data.board10));
-            if (data.percentage10) d10.push('Percentage: ' + esc(data.percentage10));
-            if (d10.length) html += '<div class="rv-entry-detail">' + d10.join('  |  ') + '</div>';
+            html += '<div class="rv-bullet">10th Grade</div>';
+            let d10School = [];
+            if (data.school10) d10School.push(esc(data.school10));
+            if (d10School.length) html += '<div class="rv-sub-bullet">' + d10School.join(', ') + '</div>';
+            let d10Percent = [];
+            if (data.percentage10) d10Percent.push('Percentage: ' + esc(data.percentage10));
+            if (d10Percent.length) html += '<div class="rv-sub-bullet">' + d10Percent.join(', ') + '</div>';
         }
     }
 
@@ -381,6 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('resumeForm');
     form.addEventListener('input', updatePreview);
     form.addEventListener('change', updatePreview);
+    updatePreview(); // Initial preview display
 });
 
 
@@ -518,19 +525,19 @@ function downloadPDF() {
         y += 2;
     }
     if (data.school12) {
-        addText(`12th — ${data.school12}`, true);
-        const details12 = [];
-        if (data.board12) details12.push(`Board: ${data.board12}`);
-        if (data.percentage12) details12.push(`Percentage: ${data.percentage12}`);
-        if (details12.length) addText(details12.join('  |  '), false, 5);
+        let title12 = '12th Grade';
+        if (data.board12) title12 += ' - ' + data.board12;
+        addText(title12, true);
+        if (data.school12) addText(data.school12, false, 5);
+        y += 1;
+        if (data.percentage12) addText(`Percentage: ${data.percentage12}`, false, 5);
         y += 2;
     }
     if (data.school10) {
-        addText(`10th — ${data.school10}`, true);
-        const details10 = [];
-        if (data.board10) details10.push(`Board: ${data.board10}`);
-        if (data.percentage10) details10.push(`Percentage: ${data.percentage10}`);
-        if (details10.length) addText(details10.join('  |  '), false, 5);
+        addText(`10th Grade`, true);
+        if (data.school10) addText(data.school10, false, 5);
+        y += 1;
+        if (data.percentage10) addText(`Percentage: ${data.percentage10}`, false, 5);
         y += 2;
     }
     y += 1;
@@ -679,18 +686,20 @@ function downloadDOC() {
         if (parts.length) children.push(normalPara(parts.join('  |  '), { indent: true }));
     }
     if (data.school12) {
-        children.push(normalPara(`12th — ${data.school12}`, { bold: true }));
+        let title12 = '12th Grade';
+        if (data.board12) title12 += ' - ' + data.board12;
+        children.push(normalPara(title12, { bold: true }));
         const d12 = [];
-        if (data.board12) d12.push(`Board: ${data.board12}`);
-        if (data.percentage12) d12.push(`Percentage: ${data.percentage12}`);
-        if (d12.length) children.push(normalPara(d12.join('  |  '), { indent: true }));
+        if (data.school12) d12.push(data.school12);
+        if (d12.length) children.push(normalPara(d12.join(', '), { indent: true }));
+        if (data.percentage12) children.push(normalPara(`Percentage: ${data.percentage12}`, { indent: true }));
     }
     if (data.school10) {
-        children.push(normalPara(`10th — ${data.school10}`, { bold: true }));
+        children.push(normalPara('10th Grade', { bold: true }));
         const d10 = [];
-        if (data.board10) d10.push(`Board: ${data.board10}`);
-        if (data.percentage10) d10.push(`Percentage: ${data.percentage10}`);
-        if (d10.length) children.push(normalPara(d10.join('  |  '), { indent: true }));
+        if (data.school10) d10.push(data.school10);
+        if (d10.length) children.push(normalPara(d10.join(', '), { indent: true }));
+        if (data.percentage10) children.push(normalPara(`Percentage: ${data.percentage10}`, { indent: true }));
     }
 
     // Skills
