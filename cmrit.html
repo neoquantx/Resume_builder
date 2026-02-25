@@ -138,16 +138,37 @@ i want education <!DOCTYPE html>
                     </div>
                 </div>
 
-                <!-- Skills -->
+                <!-- Technical Skills: two-column inputs -->
                 <div class="form-section">
-                    <h2>Skills</h2>
-                    <div class="form-group">
-                        <label for="technicalSkills">Technical Skills (comma-separated) *</label>
-                        <input type="text" id="technicalSkills" placeholder="e.g. Java, Python, React, MySQL">
+                    <h2>Technical Skills</h2>
+                    <div class="tech-grid">
+                        <div class="tech-left">
+                            <div class="form-group"><label>Programming Languages</label></div>
+                            <div class="form-group"><label>Frameworks</label></div>
+                            <div class="form-group"><label>Software</label></div>
+                            <div class="form-group"><label>Database</label></div>
+                            <div class="form-group"><label>Web Technology</label></div>
+                            <div class="form-group"><label>Version Control</label></div>
+                            <div class="form-group"><label>Operating Systems</label></div>
+                        </div>
+                        <div class="tech-right">
+                            <div class="form-group"><input type="text" id="progLangs" placeholder="e.g. Java, C, Python" oninput="updatePreview()"></div>
+                            <div class="form-group"><input type="text" id="frameworks" placeholder="e.g. React, Node.js" oninput="updatePreview()"></div>
+                            <div class="form-group"><input type="text" id="software" placeholder="e.g. VS Code, IntelliJ, MS Word" oninput="updatePreview()"></div>
+                            <div class="form-group"><input type="text" id="database" placeholder="e.g. MySQL, MongoDB, Firebase" oninput="updatePreview()"></div>
+                            <div class="form-group"><input type="text" id="webTech" placeholder="e.g. HTML, CSS, JavaScript" oninput="updatePreview()"></div>
+                            <div class="form-group"><input type="text" id="versionControl" placeholder="e.g. Git, GitHub" oninput="updatePreview()"></div>
+                            <div class="form-group"><input type="text" id="operatingSystems" placeholder="e.g. Windows, macOS, Linux" oninput="updatePreview()"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top:12px;">
                         <label for="softSkills">Soft Skills (comma-separated)</label>
-                        <input type="text" id="softSkills" placeholder="e.g. Leadership, Communication, Teamwork">
+                        <input type="text" id="softSkills" placeholder="e.g. Leadership, Communication, Teamwork" oninput="updatePreview()">
+                    </div>
+                    <div style="margin-top:12px;">
+                        <h3 style="font-size:0.95rem; margin-bottom:8px; color:#555;">Add Custom Technical Fields</h3>
+                        <div id="customTechContainer"></div>
+                        <button type="button" class="add-btn" onclick="addSkillRow('customTechContainer')">+ Add Skill Row</button>
                     </div>
                 </div>
 

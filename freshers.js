@@ -57,6 +57,41 @@ function addAchievement() {
     updatePreview();
 }
 
+function addTechnicalSkill() {
+    const container = document.getElementById('additionalTechSkillsContainer');
+    const block = document.createElement('div');
+    block.className = 'entry-block';
+    block.innerHTML = `
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();">Remove</button>
+        <div class="form-group">
+            <label>Skill</label>
+            <input type="text" name="techSkill" placeholder="e.g. Docker" oninput="updatePreview()">
+        </div>
+    `;
+    container.appendChild(block);
+    updatePreview();
+}
+
+// Add arbitrary labeled technical skill row (label + value)
+function addSkillRow(containerId) {
+    const container = document.getElementById(containerId);
+    const block = document.createElement('div');
+    block.className = 'entry-block';
+    block.innerHTML = `
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();">Remove</button>
+        <div class="form-row">
+            <div class="form-group">
+                <input type="text" name="customSkillLabel" placeholder="Label (e.g. Frameworks)" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <input type="text" name="customSkillValue" placeholder="Value (e.g. React, Docker)" oninput="updatePreview()">
+            </div>
+        </div>
+    `;
+    container.appendChild(block);
+    updatePreview();
+}
+
 
 // ===== Collect Form Data =====
 
@@ -93,12 +128,23 @@ function collectData() {
 
     // Technical Skills
     data.programmingLangs = document.getElementById('programmingLangs').value.trim();
-    data.softwareDev = document.getElementById('softwareDev').value.trim();
+    data.frameworks = document.getElementById('frameworks').value.trim();
+    data.software = document.getElementById('software').value.trim();
     data.dbManagement = document.getElementById('dbManagement').value.trim();
-    data.operatingSystems = document.getElementById('operatingSystems').value.trim();
-    data.cloudTech = document.getElementById('cloudTech').value.trim();
     data.webTech = document.getElementById('webTech').value.trim();
+    data.versionControl = document.getElementById('versionControl') ? document.getElementById('versionControl').value.trim() : '';
+    data.operatingSystems = document.getElementById('operatingSystems') ? document.getElementById('operatingSystems').value.trim() : '';
     data.domainSkills = document.getElementById('domainSkills').value.trim();
+    // Custom skill rows
+    data.customSkills = [];
+    const customBlocks = document.querySelectorAll('#customTechContainer .entry-block');
+    customBlocks.forEach(block => {
+        const labelEl = block.querySelector('[name="customSkillLabel"]');
+        const valueEl = block.querySelector('[name="customSkillValue"]');
+        const label = labelEl ? labelEl.value.trim() : '';
+        const value = valueEl ? valueEl.value.trim() : '';
+        if (label || value) data.customSkills.push({ label, value });
+    });
 
     // Projects
     data.projects = [];
@@ -195,17 +241,23 @@ function updatePreview() {
     }
 
     // === TECHNICAL SKILLS ===
-    const hasSkills = data.programmingLangs || data.softwareDev || data.dbManagement ||
-        data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills;
+    const hasSkills = data.programmingLangs || data.frameworks || data.software || data.dbManagement || data.operatingSystems || data.versionControl || data.webTech || data.domainSkills || (data.customSkills && data.customSkills.length);
     if (hasSkills) {
         html += '<div class="rv-section-title">TECHNICAL SKILLS</div>';
-        if (data.programmingLangs) html += '<div class="rv-bullet">Programming Languages: ' + esc(data.programmingLangs) + '</div>';
-        if (data.softwareDev) html += '<div class="rv-bullet">Software Development Skills: ' + esc(data.softwareDev) + '</div>';
-        if (data.dbManagement) html += '<div class="rv-bullet">Database Management: ' + esc(data.dbManagement) + '</div>';
-        if (data.operatingSystems) html += '<div class="rv-bullet">Operating Systems: ' + esc(data.operatingSystems) + '</div>';
-        if (data.cloudTech) html += '<div class="rv-bullet">Cloud Technologies: ' + esc(data.cloudTech) + '</div>';
-        if (data.webTech) html += '<div class="rv-bullet">Web Technologies: ' + esc(data.webTech) + '</div>';
-        if (data.domainSkills) html += '<div class="rv-bullet">Domain Based Skills: ' + esc(data.domainSkills) + '</div>';
+        if (data.programmingLangs) html += '<div class="rv-bullet"><b>Programming Languages:</b> ' + esc(data.programmingLangs) + '</div>';
+        if (data.frameworks) html += '<div class="rv-bullet"><b>Frameworks:</b> ' + esc(data.frameworks) + '</div>';
+        if (data.software) html += '<div class="rv-bullet"><b>Software:</b> ' + esc(data.software) + '</div>';
+        if (data.dbManagement) html += '<div class="rv-bullet"><b>Database:</b> ' + esc(data.dbManagement) + '</div>';
+        if (data.webTech) html += '<div class="rv-bullet"><b>Web Technology:</b> ' + esc(data.webTech) + '</div>';
+        if (data.versionControl) html += '<div class="rv-bullet"><b>Version Control:</b> ' + esc(data.versionControl) + '</div>';
+        if (data.operatingSystems) html += '<div class="rv-bullet"><b>Operating Systems:</b> ' + esc(data.operatingSystems) + '</div>';
+        if (data.domainSkills) html += '<div class="rv-bullet"><b>Domain Based Skills:</b> ' + esc(data.domainSkills) + '</div>';
+        if (data.customSkills && data.customSkills.length) {
+            data.customSkills.forEach(cs => {
+                const lab = cs.label ? esc(cs.label) : 'Other';
+                html += '<div class="rv-bullet"><b>' + lab + ':</b> ' + esc(cs.value) + '</div>';
+            });
+        }
     }
 
     // === PROJECTS ===
@@ -383,7 +435,7 @@ function downloadPDF() {
 
     // Technical Skills
     const hasSkills = data.programmingLangs || data.softwareDev || data.dbManagement ||
-        data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills;
+        data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills || (data.additionalTechSkills && data.additionalTechSkills.length);
     if (hasSkills) {
         addSectionTitle('Technical Skills');
         if (data.programmingLangs) addBullet(`Programming Languages: ${data.programmingLangs}`, false);
@@ -393,6 +445,7 @@ function downloadPDF() {
         if (data.cloudTech) addBullet(`Cloud Technologies: ${data.cloudTech}`, false);
         if (data.webTech) addBullet(`Web Technologies: ${data.webTech}`, false);
         if (data.domainSkills) addBullet(`Domain Based Skills: ${data.domainSkills}`, false);
+        if (data.additionalTechSkills && data.additionalTechSkills.length) addBullet(`Other: ${data.additionalTechSkills.join(', ')}`, false);
         y += 3;
     }
 
@@ -532,7 +585,7 @@ function downloadDOC() {
 
     // Technical Skills
     const hasSkills = data.programmingLangs || data.softwareDev || data.dbManagement ||
-        data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills;
+        data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills || (data.additionalTechSkills && data.additionalTechSkills.length);
     if (hasSkills) {
         children.push(sectionHeading('Technical Skills'));
         if (data.programmingLangs) children.push(bulletPara(`Programming Languages: ${data.programmingLangs}`, true));
@@ -542,6 +595,7 @@ function downloadDOC() {
         if (data.cloudTech) children.push(bulletPara(`Cloud Technologies: ${data.cloudTech}`, true));
         if (data.webTech) children.push(bulletPara(`Web Technologies: ${data.webTech}`, true));
         if (data.domainSkills) children.push(bulletPara(`Domain Based Skills: ${data.domainSkills}`, true));
+        if (data.additionalTechSkills && data.additionalTechSkills.length) children.push(bulletPara(`Other: ${data.additionalTechSkills.join(', ')}`, true));
     }
 
     // Projects

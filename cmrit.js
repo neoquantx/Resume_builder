@@ -70,6 +70,8 @@ function addInternship() {
     updatePreview();
 }
 
+// (Removed dynamic addTechnicalSkill — using fixed two-column inputs now)
+
 function addCert() {
     const container = document.getElementById('certsContainer');
     const block = document.createElement('div');
@@ -138,6 +140,26 @@ function addLanguage() {
     updatePreview();
 }
 
+// Add arbitrary labeled technical skill row (label + value)
+function addSkillRow(containerId) {
+    const container = document.getElementById(containerId);
+    const block = document.createElement('div');
+    block.className = 'entry-block';
+    block.innerHTML = `
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();">Remove</button>
+        <div class="form-row">
+            <div class="form-group">
+                <input type="text" name="customSkillLabel" placeholder="Label (e.g. Frameworks)" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <input type="text" name="customSkillValue" placeholder="Value (e.g. React, Docker)" oninput="updatePreview()">
+            </div>
+        </div>
+    `;
+    container.appendChild(block);
+    updatePreview();
+}
+
 
 // ===== Collect Form Data =====
 
@@ -168,9 +190,26 @@ function collectData() {
     data.school10 = document.getElementById('school10').value.trim();
     data.percentage10 = document.getElementById('percentage10').value.trim();
 
-    // Skills
-    data.technicalSkills = document.getElementById('technicalSkills').value.trim();
+    // Technical Skills (two-column inputs)
+    data.tech = {};
+    data.tech.progLangs = document.getElementById('progLangs') ? document.getElementById('progLangs').value.trim() : '';
+    data.tech.frameworks = document.getElementById('frameworks') ? document.getElementById('frameworks').value.trim() : '';
+    data.tech.software = document.getElementById('software') ? document.getElementById('software').value.trim() : '';
+    data.tech.database = document.getElementById('database') ? document.getElementById('database').value.trim() : '';
+    data.tech.webTech = document.getElementById('webTech') ? document.getElementById('webTech').value.trim() : '';
+    data.tech.versionControl = document.getElementById('versionControl') ? document.getElementById('versionControl').value.trim() : '';
+    data.tech.operatingSystems = document.getElementById('operatingSystems') ? document.getElementById('operatingSystems').value.trim() : '';
     data.softSkills = document.getElementById('softSkills').value.trim();
+    // Custom skill rows
+    data.customSkills = [];
+    const customBlocks = document.querySelectorAll('#customTechContainer .entry-block');
+    customBlocks.forEach(block => {
+        const labelEl = block.querySelector('[name="customSkillLabel"]');
+        const valueEl = block.querySelector('[name="customSkillValue"]');
+        const label = labelEl ? labelEl.value.trim() : '';
+        const value = valueEl ? valueEl.value.trim() : '';
+        if (label || value) data.customSkills.push({ label, value });
+    });
 
     // Projects
     data.projects = [];
@@ -313,11 +352,25 @@ function updatePreview() {
         }
     }
 
-    // === SKILLS ===
-    if (data.technicalSkills || data.softSkills) {
-        html += '<div class="rv-section-title">SKILLS</div>';
-        if (data.technicalSkills) html += '<div class="rv-bullet">Technical: ' + esc(data.technicalSkills) + '</div>';
-        if (data.softSkills) html += '<div class="rv-bullet">Soft Skills: ' + esc(data.softSkills) + '</div>';
+    // === TECHNICAL SKILLS ===
+    const tech = data.tech || {};
+    const hasTech = tech.progLangs || tech.frameworks || tech.software || tech.database || tech.webTech || tech.versionControl || tech.operatingSystems;
+    if (hasTech || data.softSkills) {
+        html += '<div class="rv-section-title">TECHNICAL SKILLS</div>';
+        if (tech.progLangs) html += '<div class="rv-bullet"><b>Programming Languages:</b> ' + esc(tech.progLangs) + '</div>';
+        if (tech.frameworks) html += '<div class="rv-bullet"><b>Frameworks:</b> ' + esc(tech.frameworks) + '</div>';
+        if (tech.software) html += '<div class="rv-bullet"><b>Software:</b> ' + esc(tech.software) + '</div>';
+        if (tech.database) html += '<div class="rv-bullet"><b>Database:</b> ' + esc(tech.database) + '</div>';
+        if (tech.webTech) html += '<div class="rv-bullet"><b>Web Technology:</b> ' + esc(tech.webTech) + '</div>';
+        if (tech.versionControl) html += '<div class="rv-bullet"><b>Version Control:</b> ' + esc(tech.versionControl) + '</div>';
+        if (tech.operatingSystems) html += '<div class="rv-bullet"><b>Operating Systems:</b> ' + esc(tech.operatingSystems) + '</div>';
+        if (data.softSkills) html += '<div class="rv-bullet"><b>Soft Skills:</b> ' + esc(data.softSkills) + '</div>';
+        if (data.customSkills && data.customSkills.length) {
+            data.customSkills.forEach(cs => {
+                const lab = cs.label ? esc(cs.label) : 'Other';
+                html += '<div class="rv-bullet"><b>' + lab + ':</b> ' + esc(cs.value) + '</div>';
+            });
+        }
     }
 
     // === PROJECTS ===
@@ -543,10 +596,23 @@ function downloadPDF() {
     y += 1;
 
     // SKILLS
-    if (data.technicalSkills || data.softSkills) {
-        addSectionTitle('Skills');
-        if (data.technicalSkills) addText(`Technical: ${data.technicalSkills}`, false, 0);
+    const techForPDF = data.tech || {};
+    if (techForPDF.progLangs || techForPDF.frameworks || techForPDF.software || techForPDF.database || techForPDF.webTech || techForPDF.versionControl || techForPDF.operatingSystems || data.softSkills) {
+        addSectionTitle('Technical Skills');
+        if (techForPDF.progLangs) addText(`Programming Languages: ${techForPDF.progLangs}`, false, 0);
+        if (techForPDF.frameworks) addText(`Frameworks: ${techForPDF.frameworks}`, false, 0);
+        if (techForPDF.software) addText(`Software: ${techForPDF.software}`, false, 0);
+        if (techForPDF.database) addText(`Database: ${techForPDF.database}`, false, 0);
+        if (techForPDF.webTech) addText(`Web Technology: ${techForPDF.webTech}`, false, 0);
+        if (techForPDF.versionControl) addText(`Version Control: ${techForPDF.versionControl}`, false, 0);
+        if (techForPDF.operatingSystems) addText(`Operating Systems: ${techForPDF.operatingSystems}`, false, 0);
         if (data.softSkills) addText(`Soft Skills: ${data.softSkills}`, false, 0);
+        if (data.customSkills && data.customSkills.length) {
+            data.customSkills.forEach(cs => {
+                const label = cs.label || 'Other';
+                addText(`${label}: ${cs.value}`, false, 0);
+            });
+        }
         y += 3;
     }
 
@@ -703,10 +769,23 @@ function downloadDOC() {
     }
 
     // Skills
-    if (data.technicalSkills || data.softSkills) {
-        children.push(sectionHeading('Skills'));
-        if (data.technicalSkills) children.push(normalPara(`Technical: ${data.technicalSkills}`));
+    const techForDoc = data.tech || {};
+    if (techForDoc.progLangs || techForDoc.frameworks || techForDoc.software || techForDoc.database || techForDoc.webTech || techForDoc.versionControl || techForDoc.operatingSystems || data.softSkills) {
+        children.push(sectionHeading('Technical Skills'));
+        if (techForDoc.progLangs) children.push(normalPara(`Programming Languages: ${techForDoc.progLangs}`));
+        if (techForDoc.frameworks) children.push(normalPara(`Frameworks: ${techForDoc.frameworks}`));
+        if (techForDoc.software) children.push(normalPara(`Software: ${techForDoc.software}`));
+        if (techForDoc.database) children.push(normalPara(`Database: ${techForDoc.database}`));
+        if (techForDoc.webTech) children.push(normalPara(`Web Technology: ${techForDoc.webTech}`));
+        if (techForDoc.versionControl) children.push(normalPara(`Version Control: ${techForDoc.versionControl}`));
+        if (techForDoc.operatingSystems) children.push(normalPara(`Operating Systems: ${techForDoc.operatingSystems}`));
         if (data.softSkills) children.push(normalPara(`Soft Skills: ${data.softSkills}`));
+        if (data.customSkills && data.customSkills.length) {
+            data.customSkills.forEach(cs => {
+                const label = cs.label || 'Other';
+                children.push(normalPara(`${label}: ${cs.value}`));
+            });
+        }
     }
 
     // Projects

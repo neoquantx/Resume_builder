@@ -192,6 +192,35 @@
                         <label for="domainSkills">Domain Based Skills</label>
                         <input type="text" id="domainSkills" placeholder="e.g. Machine Learning, Data Analysis">
                     </div>
+                    <!-- Two-column Technical Skills -->
+                    <div style="margin-top:10px;">
+                        <h3 style="font-size:0.95rem; margin-bottom:8px; color:#555;">Technical Skills</h3>
+                        <div class="tech-grid">
+                            <div class="tech-left">
+                                <div class="form-group"><label>Programming Languages</label></div>
+                                <div class="form-group"><label>Frameworks</label></div>
+                                <div class="form-group"><label>Software</label></div>
+                                <div class="form-group"><label>Database</label></div>
+                                <div class="form-group"><label>Web Technology</label></div>
+                                <div class="form-group"><label>Version Control</label></div>
+                                <div class="form-group"><label>Operating Systems</label></div>
+                            </div>
+                            <div class="tech-right">
+                                <div class="form-group"><input type="text" id="programmingLangs" placeholder="e.g. Java, Python, C++" oninput="updatePreview()"></div>
+                                <div class="form-group"><input type="text" id="frameworks" placeholder="e.g. React, Express" oninput="updatePreview()"></div>
+                                <div class="form-group"><input type="text" id="software" placeholder="e.g. VS Code, MS Office" oninput="updatePreview()"></div>
+                                <div class="form-group"><input type="text" id="dbManagement" placeholder="e.g. MySQL, MongoDB" oninput="updatePreview()"></div>
+                                <div class="form-group"><input type="text" id="webTech" placeholder="e.g. HTML, CSS, JavaScript" oninput="updatePreview()"></div>
+                                <div class="form-group"><input type="text" id="versionControl" placeholder="e.g. Git, GitHub" oninput="updatePreview()"></div>
+                                <div class="form-group"><input type="text" id="operatingSystems" placeholder="e.g. Windows, Linux" oninput="updatePreview()"></div>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;">
+                            <h4 style="font-size:0.9rem; margin-bottom:6px; color:#666;">Add Custom Technical Fields</h4>
+                            <div id="customTechContainer"></div>
+                            <button type="button" class="add-btn" onclick="addSkillRow('customTechContainer')">+ Add Skill Row</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Projects -->
