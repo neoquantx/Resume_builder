@@ -18,6 +18,18 @@ function previewPhoto(event) {
 
 // ===== Add More Entry Functions =====
 
+function addProjectDescPoint(button) {
+    const container = button.previousElementSibling;
+    const point = document.createElement('div');
+    point.className = 'project-point';
+    point.innerHTML = `
+        <input type="text" class="point-input" placeholder="Add another point" oninput="updatePreview()">
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();" style="padding: 4px 8px; margin-left: 8px;">Remove</button>
+    `;
+    container.appendChild(point);
+    updatePreview();
+}
+
 function addProject() {
     const container = document.getElementById('projectsContainer');
     const block = document.createElement('div');
@@ -29,11 +41,17 @@ function addProject() {
             <input type="text" name="projectName" placeholder="e.g. E-Commerce Website" oninput="updatePreview()">
         </div>
         <div class="form-group">
-            <label>Description</label>
-            <textarea name="projectDesc" placeholder="Brief description of the project" oninput="updatePreview()"></textarea>
+            <label>Description (Add points)</label>
+            <div name="projectDescPoints" class="project-points-container">
+                <div class="project-point">
+                    <input type="text" class="point-input" placeholder="Add a description point" oninput="updatePreview()">
+                    <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();" style="padding: 4px 8px; margin-left: 8px;">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addProjectDescPoint(this)" style="margin-top: 8px; width: 100%;">+ Add Description Point</button>
         </div>
         <div class="form-group">
-            <label>Technologies Used</label>
+            <label><b>Tech Stack</b></label>
             <input type="text" name="projectTech" placeholder="e.g. React, Node.js, MongoDB" oninput="updatePreview()">
         </div>
     `;
@@ -114,29 +132,29 @@ function addExtra() {
     updatePreview();
 }
 
-function addLanguage() {
-    const container = document.getElementById('languagesContainer');
-    const block = document.createElement('div');
-    block.className = 'entry-block';
-    block.innerHTML = `
-        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();">Remove</button>
-        <div class="form-row">
+
+// Add technical skill row (heading + answer inputs)
+function addTechSkill() {
+    const container = document.getElementById('techSkillsContainer');
+    const row = document.createElement('div');
+    row.className = 'tech-grid';
+    row.style.marginBottom = '12px';
+    row.innerHTML = `
+        <div class="tech-left">
             <div class="form-group">
-                <label>Language</label>
-                <input type="text" name="langName" placeholder="e.g. Hindi" oninput="updatePreview()">
+                <input type="text" name="techSkillHeading" placeholder="e.g. Programming Languages" oninput="updatePreview()">
             </div>
-            <div class="form-group">
-                <label>Proficiency</label>
-                <select name="langProf" onchange="updatePreview()">
-                    <option value="Native">Native</option>
-                    <option value="Fluent">Fluent</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Basic">Basic</option>
-                </select>
+        </div>
+        <div class="tech-right">
+            <div style="display: flex; gap: 8px;">
+                <div class="form-group" style="flex: 1;">
+                    <input type="text" name="techSkillAnswer" placeholder="e.g. Java, Python, C++" oninput="updatePreview()">
+                </div>
+                <button type="button" class="remove-btn" onclick="this.closest('.tech-grid').remove(); updatePreview();" style="align-self: flex-start; padding: 8px 12px;">Remove</button>
             </div>
         </div>
     `;
-    container.appendChild(block);
+    container.appendChild(row);
     updatePreview();
 }
 
@@ -187,8 +205,10 @@ function collectData() {
     data.school12 = document.getElementById('school12').value.trim();
     data.board12 = document.getElementById('board12').value.trim();
     data.percentage12 = document.getElementById('percentage12').value.trim();
+    data.year12 = document.getElementById('year12') ? document.getElementById('year12').value.trim() : '';
     data.school10 = document.getElementById('school10').value.trim();
     data.percentage10 = document.getElementById('percentage10').value.trim();
+    data.year10 = document.getElementById('year10') ? document.getElementById('year10').value.trim() : '';
 
     // Technical Skills (two-column inputs)
     data.tech = {};
@@ -199,7 +219,19 @@ function collectData() {
     data.tech.webTech = document.getElementById('webTech') ? document.getElementById('webTech').value.trim() : '';
     data.tech.versionControl = document.getElementById('versionControl') ? document.getElementById('versionControl').value.trim() : '';
     data.tech.operatingSystems = document.getElementById('operatingSystems') ? document.getElementById('operatingSystems').value.trim() : '';
-    data.softSkills = document.getElementById('softSkills').value.trim();
+    data.softSkills = document.getElementById('softSkills') ? document.getElementById('softSkills').value.trim() : '';
+    
+    // Dynamic tech skills (from techSkillsContainer)
+    data.dynamicTechSkills = [];
+    const techGrids = document.querySelectorAll('#techSkillsContainer .tech-grid');
+    techGrids.forEach(grid => {
+        const headingEl = grid.querySelector('[name="techSkillHeading"]');
+        const answerEl = grid.querySelector('[name="techSkillAnswer"]');
+        const heading = headingEl ? headingEl.value.trim() : '';
+        const answer = answerEl ? answerEl.value.trim() : '';
+        if (heading || answer) data.dynamicTechSkills.push({ heading, answer });
+    });
+    
     // Custom skill rows
     data.customSkills = [];
     const customBlocks = document.querySelectorAll('#customTechContainer .entry-block');
@@ -216,9 +248,17 @@ function collectData() {
     const projectBlocks = document.querySelectorAll('#projectsContainer .entry-block');
     projectBlocks.forEach(block => {
         const name = block.querySelector('[name="projectName"]').value.trim();
-        const desc = block.querySelector('[name="projectDesc"]').value.trim();
         const tech = block.querySelector('[name="projectTech"]').value.trim();
-        if (name) data.projects.push({ name, desc, tech });
+        
+        // Collect description points
+        const descPoints = [];
+        const pointInputs = block.querySelectorAll('.project-points-container .point-input');
+        pointInputs.forEach(input => {
+            const point = input.value.trim();
+            if (point) descPoints.push(point);
+        });
+        
+        if (name) data.projects.push({ name, descPoints, tech });
     });
 
     // Internships
@@ -248,15 +288,6 @@ function collectData() {
         const activity = block.querySelector('[name="extraActivity"]').value.trim();
         const role = block.querySelector('[name="extraRole"]').value.trim();
         if (activity) data.extracurricular.push({ activity, role });
-    });
-
-    // Languages
-    data.languages = [];
-    const langBlocks = document.querySelectorAll('#languagesContainer .entry-block');
-    langBlocks.forEach(block => {
-        const name = block.querySelector('[name="langName"]').value.trim();
-        const prof = block.querySelector('[name="langProf"]').value;
-        if (name) data.languages.push({ name, prof });
     });
 
     // Personal Details
@@ -333,29 +364,35 @@ function updatePreview() {
         if (data.school12) {
             let d12Title = '12th Grade';
             if (data.board12) d12Title += ' - ' + esc(data.board12);
-            html += '<div class="rv-bullet">' + d12Title + '</div>';
+            html += '<div class="rv-bullet"><b>' + d12Title + '</b></div>';
             let d12School = [];
             if (data.school12) d12School.push(esc(data.school12));
             if (d12School.length) html += '<div class="rv-sub-bullet">' + d12School.join(', ') + '</div>';
-            let d12Percent = [];
-            if (data.percentage12) d12Percent.push('Percentage: ' + esc(data.percentage12));
-            if (d12Percent.length) html += '<div class="rv-sub-bullet">' + d12Percent.join(', ') + '</div>';
+            let d12Extra = [];
+            if (data.percentage12) d12Extra.push(esc(data.percentage12));
+            if (data.year12) d12Extra.push(esc(data.year12));
+            if (d12Extra.length) html += '<div class="rv-sub-bullet">' + d12Extra.join(', ') + '</div>';
         }
         if (data.school10) {
-            html += '<div class="rv-bullet">10th Grade</div>';
+            html += '<div class="rv-bullet"><b>10th Grade</b></div>';
             let d10School = [];
             if (data.school10) d10School.push(esc(data.school10));
             if (d10School.length) html += '<div class="rv-sub-bullet">' + d10School.join(', ') + '</div>';
-            let d10Percent = [];
-            if (data.percentage10) d10Percent.push('Percentage: ' + esc(data.percentage10));
-            if (d10Percent.length) html += '<div class="rv-sub-bullet">' + d10Percent.join(', ') + '</div>';
+            let d10Extra = [];
+            if (data.percentage10) d10Extra.push(esc(data.percentage10));
+            if (data.year10) d10Extra.push(esc(data.year10));
+            if (d10Extra.length) html += '<div class="rv-sub-bullet">' + d10Extra.join(', ') + '</div>';
         }
     }
 
     // === TECHNICAL SKILLS ===
     const tech = data.tech || {};
     const hasTech = tech.progLangs || tech.frameworks || tech.software || tech.database || tech.webTech || tech.versionControl || tech.operatingSystems;
-    if (hasTech || data.softSkills) {
+    const hasStaticTech = hasTech || data.softSkills;
+    const hasDynamic = data.dynamicTechSkills && data.dynamicTechSkills.length;
+    const hasCustom = data.customSkills && data.customSkills.length;
+    
+    if (hasStaticTech || hasDynamic || hasCustom) {
         html += '<div class="rv-section-title">TECHNICAL SKILLS</div>';
         if (tech.progLangs) html += '<div class="rv-bullet"><b>Programming Languages:</b> ' + esc(tech.progLangs) + '</div>';
         if (tech.frameworks) html += '<div class="rv-bullet"><b>Frameworks:</b> ' + esc(tech.frameworks) + '</div>';
@@ -365,7 +402,16 @@ function updatePreview() {
         if (tech.versionControl) html += '<div class="rv-bullet"><b>Version Control:</b> ' + esc(tech.versionControl) + '</div>';
         if (tech.operatingSystems) html += '<div class="rv-bullet"><b>Operating Systems:</b> ' + esc(tech.operatingSystems) + '</div>';
         if (data.softSkills) html += '<div class="rv-bullet"><b>Soft Skills:</b> ' + esc(data.softSkills) + '</div>';
-        if (data.customSkills && data.customSkills.length) {
+        
+        // Dynamic tech skills
+        if (hasDynamic) {
+            data.dynamicTechSkills.forEach(ts => {
+                const heading = ts.heading ? esc(ts.heading) : 'Skill';
+                html += '<div class="rv-bullet"><b>' + heading + ':</b> ' + esc(ts.answer) + '</div>';
+            });
+        }
+        
+        if (hasCustom) {
             data.customSkills.forEach(cs => {
                 const lab = cs.label ? esc(cs.label) : 'Other';
                 html += '<div class="rv-bullet"><b>' + lab + ':</b> ' + esc(cs.value) + '</div>';
@@ -378,8 +424,12 @@ function updatePreview() {
         html += '<div class="rv-section-title">PROJECTS</div>';
         data.projects.forEach(p => {
             html += '<div class="rv-bullet"><b>' + esc(p.name) + '</b></div>';
-            if (p.tech) html += '<div class="rv-sub-bullet">Technologies: ' + esc(p.tech) + '</div>';
-            if (p.desc) html += '<div class="rv-sub-bullet">' + esc(p.desc) + '</div>';
+            if (p.descPoints && p.descPoints.length) {
+                p.descPoints.forEach(point => {
+                    html += '<div class="rv-sub-bullet">• ' + esc(point) + '</div>';
+                });
+            }
+            if (p.tech) html += '<div class="rv-sub-bullet"><b>Tech Stack:</b> ' + esc(p.tech) + '</div>';
         });
     }
 
@@ -406,14 +456,6 @@ function updatePreview() {
         html += '<div class="rv-section-title">CO-CURRICULAR ACTIVITIES</div>';
         data.extracurricular.forEach(e => {
             html += '<div class="rv-bullet">' + esc(e.activity) + (e.role ? ' — ' + esc(e.role) : '') + '</div>';
-        });
-    }
-
-    // === LANGUAGES ===
-    if (data.languages.length) {
-        html += '<div class="rv-section-title">LANGUAGES</div>';
-        data.languages.forEach(l => {
-            html += '<div class="rv-bullet">' + esc(l.name) + ' — ' + esc(l.prof) + '</div>';
         });
     }
 
@@ -583,14 +625,14 @@ function downloadPDF() {
         addText(title12, true);
         if (data.school12) addText(data.school12, false, 5);
         y += 1;
-        if (data.percentage12) addText(`Percentage: ${data.percentage12}`, false, 5);
+        if (data.percentage12 || data.year12) addText(`${data.percentage12 ? data.percentage12 : ''}${data.percentage12 && data.year12 ? ', ' : ''}${data.year12 ? data.year12 : ''}`, false, 5);
         y += 2;
     }
     if (data.school10) {
         addText(`10th Grade`, true);
         if (data.school10) addText(data.school10, false, 5);
         y += 1;
-        if (data.percentage10) addText(`Percentage: ${data.percentage10}`, false, 5);
+        if (data.percentage10 || data.year10) addText(`${data.percentage10 ? data.percentage10 : ''}${data.percentage10 && data.year10 ? ', ' : ''}${data.year10 ? data.year10 : ''}`, false, 5);
         y += 2;
     }
     y += 1;
@@ -621,8 +663,12 @@ function downloadPDF() {
         addSectionTitle('Projects');
         data.projects.forEach(p => {
             addText(p.name, true);
-            if (p.tech) addText(`Technologies: ${p.tech}`, false, 5);
-            if (p.desc) addText(p.desc, false, 5);
+            if (p.descPoints && p.descPoints.length) {
+                p.descPoints.forEach(point => {
+                    addText(`• ${point}`, false, 5);
+                });
+            }
+            if (p.tech) addText(`Tech Stack: ${p.tech}`, false, 5);
             y += 2;
         });
         y += 1;
@@ -654,15 +700,6 @@ function downloadPDF() {
         addSectionTitle('Extracurricular Activities');
         data.extracurricular.forEach(e => {
             addText(`${e.activity}${e.role ? ' — ' + e.role : ''}`, false, 0);
-        });
-        y += 3;
-    }
-
-    // LANGUAGES
-    if (data.languages.length) {
-        addSectionTitle('Languages');
-        data.languages.forEach(l => {
-            addText(`${l.name} — ${l.prof}`, false, 0);
         });
         y += 3;
     }
@@ -758,19 +795,20 @@ function downloadDOC() {
         const d12 = [];
         if (data.school12) d12.push(data.school12);
         if (d12.length) children.push(normalPara(d12.join(', '), { indent: true }));
-        if (data.percentage12) children.push(normalPara(`Percentage: ${data.percentage12}`, { indent: true }));
+        if (data.percentage12 || data.year12) children.push(normalPara(`${data.percentage12 ? data.percentage12 : ''}${data.percentage12 && data.year12 ? ', ' : ''}${data.year12 ? data.year12 : ''}`, { indent: true }));
     }
     if (data.school10) {
         children.push(normalPara('10th Grade', { bold: true }));
         const d10 = [];
         if (data.school10) d10.push(data.school10);
         if (d10.length) children.push(normalPara(d10.join(', '), { indent: true }));
-        if (data.percentage10) children.push(normalPara(`Percentage: ${data.percentage10}`, { indent: true }));
+        if (data.percentage10 || data.year10) children.push(normalPara(`${data.percentage10 ? data.percentage10 : ''}${data.percentage10 && data.year10 ? ', ' : ''}${data.year10 ? data.year10 : ''}`, { indent: true }));
     }
 
     // Skills
     const techForDoc = data.tech || {};
-    if (techForDoc.progLangs || techForDoc.frameworks || techForDoc.software || techForDoc.database || techForDoc.webTech || techForDoc.versionControl || techForDoc.operatingSystems || data.softSkills) {
+    const hasDocTech = techForDoc.progLangs || techForDoc.frameworks || techForDoc.software || techForDoc.database || techForDoc.webTech || techForDoc.versionControl || techForDoc.operatingSystems || data.softSkills || (data.dynamicTechSkills && data.dynamicTechSkills.length) || (data.customSkills && data.customSkills.length);
+    if (hasDocTech) {
         children.push(sectionHeading('Technical Skills'));
         if (techForDoc.progLangs) children.push(normalPara(`Programming Languages: ${techForDoc.progLangs}`));
         if (techForDoc.frameworks) children.push(normalPara(`Frameworks: ${techForDoc.frameworks}`));
@@ -780,6 +818,14 @@ function downloadDOC() {
         if (techForDoc.versionControl) children.push(normalPara(`Version Control: ${techForDoc.versionControl}`));
         if (techForDoc.operatingSystems) children.push(normalPara(`Operating Systems: ${techForDoc.operatingSystems}`));
         if (data.softSkills) children.push(normalPara(`Soft Skills: ${data.softSkills}`));
+        
+        if (data.dynamicTechSkills && data.dynamicTechSkills.length) {
+            data.dynamicTechSkills.forEach(ts => {
+                const heading = ts.heading || 'Skill';
+                children.push(normalPara(`${heading}: ${ts.answer}`));
+            });
+        }
+        
         if (data.customSkills && data.customSkills.length) {
             data.customSkills.forEach(cs => {
                 const label = cs.label || 'Other';
@@ -793,8 +839,12 @@ function downloadDOC() {
         children.push(sectionHeading('Projects'));
         data.projects.forEach(p => {
             children.push(normalPara(p.name, { bold: true }));
-            if (p.tech) children.push(normalPara(`Technologies: ${p.tech}`, { indent: true }));
-            if (p.desc) children.push(normalPara(p.desc, { indent: true }));
+            if (p.descPoints && p.descPoints.length) {
+                p.descPoints.forEach(point => {
+                    children.push(normalPara(`• ${point}`, { indent: true }));
+                });
+            }
+            if (p.tech) children.push(normalPara(`Tech Stack: ${p.tech}`, { indent: true }));
         });
     }
 
@@ -821,14 +871,6 @@ function downloadDOC() {
         children.push(sectionHeading('Extracurricular Activities'));
         data.extracurricular.forEach(e => {
             children.push(normalPara(`${e.activity}${e.role ? ' — ' + e.role : ''}`));
-        });
-    }
-
-    // Languages
-    if (data.languages.length) {
-        children.push(sectionHeading('Languages'));
-        data.languages.forEach(l => {
-            children.push(normalPara(`${l.name} — ${l.prof}`));
         });
     }
 

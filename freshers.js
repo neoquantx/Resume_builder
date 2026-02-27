@@ -1,5 +1,17 @@
 // ===== Add More Entry Functions =====
 
+function addProjectDescPoint(button) {
+    const container = button.previousElementSibling;
+    const point = document.createElement('div');
+    point.className = 'project-point';
+    point.innerHTML = `
+        <input type="text" class="point-input" placeholder="Add another point" oninput="updatePreview()">
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();" style="padding: 4px 8px; margin-left: 8px;">Remove</button>
+    `;
+    container.appendChild(point);
+    updatePreview();
+}
+
 function addProject() {
     const container = document.getElementById('projectsContainer');
     const block = document.createElement('div');
@@ -11,16 +23,22 @@ function addProject() {
             <input type="text" name="projectTitle" placeholder="e.g. Weather App" oninput="updatePreview()">
         </div>
         <div class="form-group">
-            <label>Created / Developed / Utilised / Implemented</label>
-            <textarea name="projectDesc" placeholder="Describe what you created/developed" oninput="updatePreview()"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Tools & Technologies Used</label>
-            <input type="text" name="projectTech" placeholder="e.g. Java, Android Studio" oninput="updatePreview()">
+            <label>Description (Add points)</label>
+            <div name="projectDescPoints" class="project-points-container">
+                <div class="project-point">
+                    <input type="text" class="point-input" placeholder="Add a description point" oninput="updatePreview()">
+                    <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();" style="padding: 4px 8px; margin-left: 8px;">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addProjectDescPoint(this)" style="margin-top: 8px; width: 100%;">+ Add Description Point</button>
         </div>
         <div class="form-group">
             <label>Role</label>
             <input type="text" name="projectRole" placeholder="e.g. Leader / Front End / Back End" oninput="updatePreview()">
+        </div>
+        <div class="form-group">
+            <label><b>Tech Stack</b></label>
+            <input type="text" name="projectTech" placeholder="e.g. Java, Android Studio" oninput="updatePreview()">
         </div>
     `;
     container.appendChild(block);
@@ -69,6 +87,31 @@ function addTechnicalSkill() {
         </div>
     `;
     container.appendChild(block);
+    updatePreview();
+}
+
+// Add technical skill row (heading + answer inputs)
+function addTechSkill() {
+    const container = document.getElementById('techSkillsContainer');
+    const row = document.createElement('div');
+    row.className = 'tech-grid';
+    row.style.marginBottom = '12px';
+    row.innerHTML = `
+        <div class="tech-left">
+            <div class="form-group">
+                <input type="text" name="techSkillHeading" placeholder="e.g. Programming Languages" oninput="updatePreview()">
+            </div>
+        </div>
+        <div class="tech-right">
+            <div style="display: flex; gap: 8px;">
+                <div class="form-group" style="flex: 1;">
+                    <input type="text" name="techSkillAnswer" placeholder="e.g. Java, Python, C++" oninput="updatePreview()">
+                </div>
+                <button type="button" class="remove-btn" onclick="this.closest('.tech-grid').remove(); updatePreview();" style="align-self: flex-start; padding: 8px 12px;">Remove</button>
+            </div>
+        </div>
+    `;
+    container.appendChild(row);
     updatePreview();
 }
 
@@ -127,14 +170,26 @@ function collectData() {
     });
 
     // Technical Skills
-    data.programmingLangs = document.getElementById('programmingLangs').value.trim();
-    data.frameworks = document.getElementById('frameworks').value.trim();
-    data.software = document.getElementById('software').value.trim();
-    data.dbManagement = document.getElementById('dbManagement').value.trim();
-    data.webTech = document.getElementById('webTech').value.trim();
+    data.programmingLangs = document.getElementById('programmingLangs') ? document.getElementById('programmingLangs').value.trim() : '';
+    data.frameworks = document.getElementById('frameworks') ? document.getElementById('frameworks').value.trim() : '';
+    data.software = document.getElementById('software') ? document.getElementById('software').value.trim() : '';
+    data.dbManagement = document.getElementById('dbManagement') ? document.getElementById('dbManagement').value.trim() : '';
+    data.webTech = document.getElementById('webTech') ? document.getElementById('webTech').value.trim() : '';
     data.versionControl = document.getElementById('versionControl') ? document.getElementById('versionControl').value.trim() : '';
     data.operatingSystems = document.getElementById('operatingSystems') ? document.getElementById('operatingSystems').value.trim() : '';
-    data.domainSkills = document.getElementById('domainSkills').value.trim();
+    data.domainSkills = document.getElementById('domainSkills') ? document.getElementById('domainSkills').value.trim() : '';
+    
+    // Dynamic tech skills (from techSkillsContainer)
+    data.dynamicTechSkills = [];
+    const techGrids = document.querySelectorAll('#techSkillsContainer .tech-grid');
+    techGrids.forEach(grid => {
+        const headingEl = grid.querySelector('[name="techSkillHeading"]');
+        const answerEl = grid.querySelector('[name="techSkillAnswer"]');
+        const heading = headingEl ? headingEl.value.trim() : '';
+        const answer = answerEl ? answerEl.value.trim() : '';
+        if (heading || answer) data.dynamicTechSkills.push({ heading, answer });
+    });
+    
     // Custom skill rows
     data.customSkills = [];
     const customBlocks = document.querySelectorAll('#customTechContainer .entry-block');
@@ -151,10 +206,18 @@ function collectData() {
     const projectBlocks = document.querySelectorAll('#projectsContainer .entry-block');
     projectBlocks.forEach(block => {
         const title = block.querySelector('[name="projectTitle"]').value.trim();
-        const desc = block.querySelector('[name="projectDesc"]').value.trim();
         const tech = block.querySelector('[name="projectTech"]').value.trim();
         const role = block.querySelector('[name="projectRole"]').value.trim();
-        if (title) data.projects.push({ title, desc, tech, role });
+        
+        // Collect description points
+        const descPoints = [];
+        const pointInputs = block.querySelectorAll('.project-points-container .point-input');
+        pointInputs.forEach(input => {
+            const point = input.value.trim();
+            if (point) descPoints.push(point);
+        });
+        
+        if (title) data.projects.push({ title, descPoints, tech, role });
     });
 
     // Co-Curricular & Extra-Curricular
@@ -230,18 +293,26 @@ function updatePreview() {
         data.academics.forEach(a => {
             const degreeText = a.degree || a.label;
             html += '<div class="rv-bullet"><b>' + esc(degreeText) + '</b></div>';
-            const details = [];
-            if (a.college) details.push(esc(a.college));
-            if (a.cgpa) details.push(esc(a.cgpa));
-            if (a.year) details.push(esc(a.year));
-            if (details.length) {
-                html += '<div class="rv-entry-detail">' + details.join(' | ') + '</div>';
+            // For 12th/10th show school then "percentage, year" on next line
+            const labelLower = (a.label || '').toLowerCase();
+            if (labelLower.includes('12th') || labelLower.includes('10th')) {
+                if (a.college) html += '<div class="rv-entry-detail">' + esc(a.college) + '</div>';
+                const parts = [];
+                if (a.cgpa) parts.push(esc(a.cgpa));
+                if (a.year) parts.push(esc(a.year));
+                if (parts.length) html += '<div class="rv-sub-bullet">' + parts.join(', ') + '</div>';
+            } else {
+                const details = [];
+                if (a.college) details.push(esc(a.college));
+                if (a.cgpa) details.push(esc(a.cgpa));
+                if (a.year) details.push(esc(a.year));
+                if (details.length) html += '<div class="rv-entry-detail">' + details.join(' | ') + '</div>';
             }
         });
     }
 
     // === TECHNICAL SKILLS ===
-    const hasSkills = data.programmingLangs || data.frameworks || data.software || data.dbManagement || data.operatingSystems || data.versionControl || data.webTech || data.domainSkills || (data.customSkills && data.customSkills.length);
+    const hasSkills = data.programmingLangs || data.frameworks || data.software || data.dbManagement || data.operatingSystems || data.versionControl || data.webTech || data.domainSkills || (data.dynamicTechSkills && data.dynamicTechSkills.length) || (data.customSkills && data.customSkills.length);
     if (hasSkills) {
         html += '<div class="rv-section-title">TECHNICAL SKILLS</div>';
         if (data.programmingLangs) html += '<div class="rv-bullet"><b>Programming Languages:</b> ' + esc(data.programmingLangs) + '</div>';
@@ -252,6 +323,15 @@ function updatePreview() {
         if (data.versionControl) html += '<div class="rv-bullet"><b>Version Control:</b> ' + esc(data.versionControl) + '</div>';
         if (data.operatingSystems) html += '<div class="rv-bullet"><b>Operating Systems:</b> ' + esc(data.operatingSystems) + '</div>';
         if (data.domainSkills) html += '<div class="rv-bullet"><b>Domain Based Skills:</b> ' + esc(data.domainSkills) + '</div>';
+        
+        // Dynamic tech skills
+        if (data.dynamicTechSkills && data.dynamicTechSkills.length) {
+            data.dynamicTechSkills.forEach(ts => {
+                const heading = ts.heading ? esc(ts.heading) : 'Skill';
+                html += '<div class="rv-bullet"><b>' + heading + ':</b> ' + esc(ts.answer) + '</div>';
+            });
+        }
+        
         if (data.customSkills && data.customSkills.length) {
             data.customSkills.forEach(cs => {
                 const lab = cs.label ? esc(cs.label) : 'Other';
@@ -265,8 +345,12 @@ function updatePreview() {
         html += '<div class="rv-section-title">PROJECTS</div>';
         data.projects.forEach(p => {
             html += '<div class="rv-bullet"><b>' + esc(p.title) + '</b></div>';
-            if (p.desc) html += '<div class="rv-sub-bullet">' + esc(p.desc) + '</div>';
-            if (p.tech) html += '<div class="rv-sub-bullet">Tools & Technologies: ' + esc(p.tech) + '</div>';
+            if (p.descPoints && p.descPoints.length) {
+                p.descPoints.forEach(point => {
+                    html += '<div class="rv-sub-bullet">• ' + esc(point) + '</div>';
+                });
+            }
+            if (p.tech) html += '<div class="rv-sub-bullet"><b>Tech Stack:</b> ' + esc(p.tech) + '</div>';
             if (p.role) html += '<div class="rv-sub-bullet">Role: ' + esc(p.role) + '</div>';
         });
     }
@@ -421,12 +505,19 @@ function downloadPDF() {
         data.academics.forEach(a => {
             const degreeText = a.degree || a.label;
             addBullet(degreeText, true);
-            const details = [];
-            if (a.college) details.push(a.college);
-            if (a.cgpa) details.push(a.cgpa);
-            if (a.year) details.push(a.year);
-            if (details.length) {
-                addText(details.join(' | '), false, 5);
+            const labelLower = (a.label || '').toLowerCase();
+            if (labelLower.includes('12th') || labelLower.includes('10th')) {
+                if (a.college) addText(a.college, false, 5);
+                const parts = [];
+                if (a.cgpa) parts.push(a.cgpa);
+                if (a.year) parts.push(a.year);
+                if (parts.length) addText(parts.join(', '), false, 5);
+            } else {
+                const details = [];
+                if (a.college) details.push(a.college);
+                if (a.cgpa) details.push(a.cgpa);
+                if (a.year) details.push(a.year);
+                if (details.length) addText(details.join(' | '), false, 5);
             }
             y += 1;
         });
@@ -454,8 +545,12 @@ function downloadPDF() {
         addSectionTitle('Projects');
         data.projects.forEach(p => {
             addBullet(p.title, true);
-            if (p.desc) addSubBullet(p.desc);
-            if (p.tech) addSubBullet(`Tools & Technologies used: ${p.tech}`);
+            if (p.descPoints && p.descPoints.length) {
+                p.descPoints.forEach(point => {
+                    addSubBullet(`• ${point}`);
+                });
+            }
+            if (p.tech) addSubBullet(`Tech Stack: ${p.tech}`);
             if (p.role) addSubBullet(`Role: ${p.role}`);
             y += 2;
         });
@@ -573,19 +668,26 @@ function downloadDOC() {
         data.academics.forEach(a => {
             const degreeText = a.degree || a.label;
             children.push(bulletPara(degreeText, true));
-            const details = [];
-            if (a.college) details.push(a.college);
-            if (a.cgpa) details.push(a.cgpa);
-            if (a.year) details.push(a.year);
-            if (details.length) {
-                children.push(normalPara(details.join(' | '), { indent: true }));
+            const labelLower = (a.label || '').toLowerCase();
+            if (labelLower.includes('12th') || labelLower.includes('10th')) {
+                if (a.college) children.push(normalPara(a.college, { indent: true }));
+                const parts = [];
+                if (a.cgpa) parts.push(a.cgpa);
+                if (a.year) parts.push(a.year);
+                if (parts.length) children.push(normalPara(parts.join(', '), { indent: true }));
+            } else {
+                const details = [];
+                if (a.college) details.push(a.college);
+                if (a.cgpa) details.push(a.cgpa);
+                if (a.year) details.push(a.year);
+                if (details.length) children.push(normalPara(details.join(' | '), { indent: true }));
             }
         });
     }
 
     // Technical Skills
     const hasSkills = data.programmingLangs || data.softwareDev || data.dbManagement ||
-        data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills || (data.additionalTechSkills && data.additionalTechSkills.length);
+        data.operatingSystems || data.cloudTech || data.webTech || data.domainSkills || (data.dynamicTechSkills && data.dynamicTechSkills.length) || (data.customSkills && data.customSkills.length) || (data.additionalTechSkills && data.additionalTechSkills.length);
     if (hasSkills) {
         children.push(sectionHeading('Technical Skills'));
         if (data.programmingLangs) children.push(bulletPara(`Programming Languages: ${data.programmingLangs}`, true));
@@ -595,6 +697,21 @@ function downloadDOC() {
         if (data.cloudTech) children.push(bulletPara(`Cloud Technologies: ${data.cloudTech}`, true));
         if (data.webTech) children.push(bulletPara(`Web Technologies: ${data.webTech}`, true));
         if (data.domainSkills) children.push(bulletPara(`Domain Based Skills: ${data.domainSkills}`, true));
+        
+        if (data.dynamicTechSkills && data.dynamicTechSkills.length) {
+            data.dynamicTechSkills.forEach(ts => {
+                const heading = ts.heading || 'Skill';
+                children.push(bulletPara(`${heading}: ${ts.answer}`, true));
+            });
+        }
+        
+        if (data.customSkills && data.customSkills.length) {
+            data.customSkills.forEach(cs => {
+                const label = cs.label || 'Other';
+                children.push(bulletPara(`${label}: ${cs.value}`, true));
+            });
+        }
+        
         if (data.additionalTechSkills && data.additionalTechSkills.length) children.push(bulletPara(`Other: ${data.additionalTechSkills.join(', ')}`, true));
     }
 
@@ -603,8 +720,12 @@ function downloadDOC() {
         children.push(sectionHeading('Projects'));
         data.projects.forEach(p => {
             children.push(bulletPara(p.title, true));
-            if (p.desc) children.push(subBulletPara(p.desc));
-            if (p.tech) children.push(subBulletPara(`Tools & Technologies used: ${p.tech}`));
+            if (p.descPoints && p.descPoints.length) {
+                p.descPoints.forEach(point => {
+                    children.push(subBulletPara(`• ${point}`));
+                });
+            }
+            if (p.tech) children.push(subBulletPara(`Tech Stack: ${p.tech}`));
             if (p.role) children.push(subBulletPara(`Role: ${p.role}`));
         });
     }

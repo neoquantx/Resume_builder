@@ -124,14 +124,14 @@
                         </div>
                         <!-- 12th -->
                         <div class="entry-block">
-                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;">12th Grade</h3>
+                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;"><b>12th Grade</b></h3>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>College / School Name</label>
                                     <input type="text" name="eduCollege" placeholder="e.g. Delhi Public School">
                                 </div>
                                 <div class="form-group">
-                                    <label>CGPA / Percentage</label>
+                                    <label style="display:none;">CGPA / Percentage</label>
                                     <input type="text" name="eduCGPA" placeholder="e.g. 92%">
                                 </div>
                                 <div class="form-group">
@@ -142,14 +142,14 @@
                         </div>
                         <!-- 10th -->
                         <div class="entry-block">
-                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;">10th Grade</h3>
+                            <h3 style="font-size:0.95rem; margin-bottom:10px; color:#555;"><b>10th Grade</b></h3>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>School Name</label>
                                     <input type="text" name="eduCollege" placeholder="e.g. Delhi Public School">
                                 </div>
                                 <div class="form-group">
-                                    <label>CGPA / Percentage</label>
+                                    <label style="display:none;">CGPA / Percentage</label>
                                     <input type="text" name="eduCGPA" placeholder="e.g. 95%">
                                 </div>
                                 <div class="form-group">
@@ -164,63 +164,16 @@
                 <!-- Technical Skills -->
                 <div class="form-section">
                     <h2>Technical Skills</h2>
-                    <div class="form-group">
-                        <label for="programmingLangs">Programming Languages</label>
-                        <input type="text" id="programmingLangs" placeholder="e.g. Java, Python, C++">
-                    </div>
-                    <div class="form-group">
-                        <label for="softwareDev">Software Development Skills</label>
-                        <input type="text" id="softwareDev" placeholder="e.g. Agile, SDLC, Git">
-                    </div>
-                    <div class="form-group">
-                        <label for="dbManagement">Database Management</label>
-                        <input type="text" id="dbManagement" placeholder="e.g. MySQL, MongoDB, PostgreSQL">
-                    </div>
-                    <div class="form-group">
-                        <label for="operatingSystems">Operating Systems</label>
-                        <input type="text" id="operatingSystems" placeholder="e.g. Windows, Linux, macOS">
-                    </div>
-                    <div class="form-group">
-                        <label for="cloudTech">Cloud Technologies</label>
-                        <input type="text" id="cloudTech" placeholder="e.g. AWS, Azure, GCP">
-                    </div>
-                    <div class="form-group">
-                        <label for="webTech">Web Technologies</label>
-                        <input type="text" id="webTech" placeholder="e.g. HTML, CSS, JavaScript, React">
-                    </div>
-                    <div class="form-group">
-                        <label for="domainSkills">Domain Based Skills</label>
-                        <input type="text" id="domainSkills" placeholder="e.g. Machine Learning, Data Analysis">
-                    </div>
-                    <!-- Two-column Technical Skills -->
-                    <div style="margin-top:10px;">
-                        <h3 style="font-size:0.95rem; margin-bottom:8px; color:#555;">Technical Skills</h3>
-                        <div class="tech-grid">
-                            <div class="tech-left">
-                                <div class="form-group"><label>Programming Languages</label></div>
-                                <div class="form-group"><label>Frameworks</label></div>
-                                <div class="form-group"><label>Software</label></div>
-                                <div class="form-group"><label>Database</label></div>
-                                <div class="form-group"><label>Web Technology</label></div>
-                                <div class="form-group"><label>Version Control</label></div>
-                                <div class="form-group"><label>Operating Systems</label></div>
-                            </div>
-                            <div class="tech-right">
-                                <div class="form-group"><input type="text" id="programmingLangs" placeholder="e.g. Java, Python, C++" oninput="updatePreview()"></div>
-                                <div class="form-group"><input type="text" id="frameworks" placeholder="e.g. React, Express" oninput="updatePreview()"></div>
-                                <div class="form-group"><input type="text" id="software" placeholder="e.g. VS Code, MS Office" oninput="updatePreview()"></div>
-                                <div class="form-group"><input type="text" id="dbManagement" placeholder="e.g. MySQL, MongoDB" oninput="updatePreview()"></div>
-                                <div class="form-group"><input type="text" id="webTech" placeholder="e.g. HTML, CSS, JavaScript" oninput="updatePreview()"></div>
-                                <div class="form-group"><input type="text" id="versionControl" placeholder="e.g. Git, GitHub" oninput="updatePreview()"></div>
-                                <div class="form-group"><input type="text" id="operatingSystems" placeholder="e.g. Windows, Linux" oninput="updatePreview()"></div>
-                            </div>
+                    <div class="tech-grid">
+                        <div class="tech-left">
+                            <label style="font-weight: bold; margin-bottom: 10px; display: block;">Skill Heading</label>
                         </div>
-                        <div style="margin-top:12px;">
-                            <h4 style="font-size:0.9rem; margin-bottom:6px; color:#666;">Add Custom Technical Fields</h4>
-                            <div id="customTechContainer"></div>
-                            <button type="button" class="add-btn" onclick="addSkillRow('customTechContainer')">+ Add Skill Row</button>
+                        <div class="tech-right">
+                            <label style="font-weight: bold; margin-bottom: 10px; display: block;">Your Skills</label>
                         </div>
                     </div>
+                    <div id="techSkillsContainer"></div>
+                    <button type="button" class="add-btn" onclick="addTechSkill()">+ Add Skill</button>
                 </div>
 
                 <!-- Projects -->
@@ -230,21 +183,25 @@
                         <div class="entry-block">
                             <div class="form-group">
                                 <label>Title of the Project *</label>
-                                <input type="text" name="projectTitle" placeholder="e.g. E-Commerce Website">
+                                <input type="text" name="projectTitle" placeholder="e.g. E-Commerce Website" oninput="updatePreview()">
                             </div>
                             <div class="form-group">
-                                <label>Created / Developed / Utilised / Implemented</label>
-                                <textarea name="projectDesc"
-                                    placeholder="e.g. Developed a full-stack e-commerce platform with user authentication and payment integration"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Tools &amp; Technologies Used</label>
-                                <input type="text" name="projectTech"
-                                    placeholder="e.g. React, Node.js, MongoDB, Stripe API">
+                                <label>Description (Add points)</label>
+                                <div name="projectDescPoints" class="project-points-container">
+                                    <div class="project-point">
+                                        <input type="text" class="point-input" placeholder="e.g. Developed a full-stack platform" oninput="updatePreview()">
+                                        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();" style="padding: 4px 8px; margin-left: 8px;">Remove</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-btn" onclick="addProjectDescPoint(this)" style="margin-top: 8px; width: 100%;">+ Add Description Point</button>
                             </div>
                             <div class="form-group">
                                 <label>Role (Leader / Front End / Back End)</label>
-                                <input type="text" name="projectRole" placeholder="e.g. Leader / Full Stack">
+                                <input type="text" name="projectRole" placeholder="e.g. Leader / Full Stack" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label><b>Tech Stack</b></label>
+                                <input type="text" name="projectTech" placeholder="e.g. React, Node.js, MongoDB, Stripe API" oninput="updatePreview()">
                             </div>
                         </div>
                         <div class="entry-block">
@@ -252,20 +209,25 @@
                                 onclick="this.parentElement.remove(); updatePreview();">Remove</button>
                             <div class="form-group">
                                 <label>Title of the Project</label>
-                                <input type="text" name="projectTitle" placeholder="e.g. Chat Application">
+                                <input type="text" name="projectTitle" placeholder="e.g. Chat Application" oninput="updatePreview()">
                             </div>
                             <div class="form-group">
-                                <label>Created / Developed / Utilised / Implemented</label>
-                                <textarea name="projectDesc"
-                                    placeholder="Describe what you created/developed"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Tools &amp; Technologies Used</label>
-                                <input type="text" name="projectTech" placeholder="e.g. Python, Flask, Socket.io">
+                                <label>Description (Add points)</label>
+                                <div name="projectDescPoints" class="project-points-container">
+                                    <div class="project-point">
+                                        <input type="text" class="point-input" placeholder="e.g. Describe what you created" oninput="updatePreview()">
+                                        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();" style="padding: 4px 8px; margin-left: 8px;">Remove</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-btn" onclick="addProjectDescPoint(this)" style="margin-top: 8px; width: 100%;">+ Add Description Point</button>
                             </div>
                             <div class="form-group">
                                 <label>Role</label>
-                                <input type="text" name="projectRole" placeholder="e.g. Back End">
+                                <input type="text" name="projectRole" placeholder="e.g. Back End" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label><b>Tech Stack</b></label>
+                                <input type="text" name="projectTech" placeholder="e.g. Python, Flask, Socket.io" oninput="updatePreview()">
                             </div>
                         </div>
                         <div class="entry-block">
@@ -273,20 +235,25 @@
                                 onclick="this.parentElement.remove(); updatePreview();">Remove</button>
                             <div class="form-group">
                                 <label>Title of the Project</label>
-                                <input type="text" name="projectTitle" placeholder="e.g. Weather App">
+                                <input type="text" name="projectTitle" placeholder="e.g. Weather App" oninput="updatePreview()">
                             </div>
                             <div class="form-group">
-                                <label>Created / Developed / Utilised / Implemented</label>
-                                <textarea name="projectDesc"
-                                    placeholder="Describe what you created/developed"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Tools &amp; Technologies Used</label>
-                                <input type="text" name="projectTech" placeholder="e.g. Java, Android Studio">
+                                <label>Description (Add points)</label>
+                                <div name="projectDescPoints" class="project-points-container">
+                                    <div class="project-point">
+                                        <input type="text" class="point-input" placeholder="e.g. Describe what you created" oninput="updatePreview()">
+                                        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); updatePreview();" style="padding: 4px 8px; margin-left: 8px;">Remove</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-btn" onclick="addProjectDescPoint(this)" style="margin-top: 8px; width: 100%;">+ Add Description Point</button>
                             </div>
                             <div class="form-group">
                                 <label>Role</label>
-                                <input type="text" name="projectRole" placeholder="e.g. Front End">
+                                <input type="text" name="projectRole" placeholder="e.g. Front End" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label><b>Tech Stack</b></label>
+                                <input type="text" name="projectTech" placeholder="e.g. Java, Android Studio" oninput="updatePreview()">
                             </div>
                         </div>
                     </div>
