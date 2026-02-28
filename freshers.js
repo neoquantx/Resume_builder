@@ -293,21 +293,12 @@ function updatePreview() {
         data.academics.forEach(a => {
             const degreeText = a.degree || a.label;
             html += '<div class="rv-bullet"><b>' + esc(degreeText) + '</b></div>';
-            // For 12th/10th show school then "percentage, year" on next line
-            const labelLower = (a.label || '').toLowerCase();
-            if (labelLower.includes('12th') || labelLower.includes('10th')) {
-                if (a.college) html += '<div class="rv-entry-detail">' + esc(a.college) + '</div>';
-                const parts = [];
-                if (a.cgpa) parts.push(esc(a.cgpa));
-                if (a.year) parts.push(esc(a.year));
-                if (parts.length) html += '<div class="rv-sub-bullet">' + parts.join(', ') + '</div>';
-            } else {
-                const details = [];
-                if (a.college) details.push(esc(a.college));
-                if (a.cgpa) details.push(esc(a.cgpa));
-                if (a.year) details.push(esc(a.year));
-                if (details.length) html += '<div class="rv-entry-detail">' + details.join(' | ') + '</div>';
-            }
+            // all education entries should display college, CGPA and year on one line
+            const details = [];
+            if (a.college) details.push(esc(a.college));
+            if (a.cgpa) details.push(esc(a.cgpa));
+            if (a.year) details.push(esc(a.year));
+            if (details.length) html += '<div class="rv-entry-detail">' + details.join(' | ') + '</div>';
         });
     }
 
@@ -351,7 +342,7 @@ function updatePreview() {
                 });
             }
             if (p.tech) html += '<div class="rv-sub-bullet"><b>Tech Stack:</b> ' + esc(p.tech) + '</div>';
-            if (p.role) html += '<div class="rv-sub-bullet">Role: ' + esc(p.role) + '</div>';
+            if (p.role) html += '<div class="rv-sub-bullet"><b>Role:</b> ' + esc(p.role) + '</div>';
         });
     }
 
@@ -505,20 +496,12 @@ function downloadPDF() {
         data.academics.forEach(a => {
             const degreeText = a.degree || a.label;
             addBullet(degreeText, true);
-            const labelLower = (a.label || '').toLowerCase();
-            if (labelLower.includes('12th') || labelLower.includes('10th')) {
-                if (a.college) addText(a.college, false, 5);
-                const parts = [];
-                if (a.cgpa) parts.push(a.cgpa);
-                if (a.year) parts.push(a.year);
-                if (parts.length) addText(parts.join(', '), false, 5);
-            } else {
-                const details = [];
-                if (a.college) details.push(a.college);
-                if (a.cgpa) details.push(a.cgpa);
-                if (a.year) details.push(a.year);
-                if (details.length) addText(details.join(' | '), false, 5);
-            }
+            // show college, CGPA and year together for all entries
+            const details = [];
+            if (a.college) details.push(a.college);
+            if (a.cgpa) details.push(a.cgpa);
+            if (a.year) details.push(a.year);
+            if (details.length) addText(details.join(' | '), false, 5);
             y += 1;
         });
         y += 2;
@@ -551,7 +534,20 @@ function downloadPDF() {
                 });
             }
             if (p.tech) addSubBullet(`Tech Stack: ${p.tech}`);
-            if (p.role) addSubBullet(`Role: ${p.role}`);
+            if (p.role) {
+                // custom bold label for role in PDF
+                const xLabel = margin + 12;
+                doc.setFontSize(9.5);
+                doc.setFont('helvetica', 'normal');
+                doc.text('○', margin + 9, y);
+                // draw bold 'Role:' then normal value on same line
+                doc.setFont('helvetica', 'bold');
+                doc.text('Role:', xLabel, y);
+                const labelWidth = doc.getTextWidth('Role: ');
+                doc.setFont('helvetica', 'normal');
+                doc.text(p.role, xLabel + labelWidth, y);
+                y += 4.5;
+            } // role text already bolded by bullets? subtle change not required
             y += 2;
         });
         y += 1;
@@ -668,20 +664,12 @@ function downloadDOC() {
         data.academics.forEach(a => {
             const degreeText = a.degree || a.label;
             children.push(bulletPara(degreeText, true));
-            const labelLower = (a.label || '').toLowerCase();
-            if (labelLower.includes('12th') || labelLower.includes('10th')) {
-                if (a.college) children.push(normalPara(a.college, { indent: true }));
-                const parts = [];
-                if (a.cgpa) parts.push(a.cgpa);
-                if (a.year) parts.push(a.year);
-                if (parts.length) children.push(normalPara(parts.join(', '), { indent: true }));
-            } else {
-                const details = [];
-                if (a.college) details.push(a.college);
-                if (a.cgpa) details.push(a.cgpa);
-                if (a.year) details.push(a.year);
-                if (details.length) children.push(normalPara(details.join(' | '), { indent: true }));
-            }
+            // display school/college, CGPA and year on one pipe-separated line for all entries
+            const details = [];
+            if (a.college) details.push(a.college);
+            if (a.cgpa) details.push(a.cgpa);
+            if (a.year) details.push(a.year);
+            if (details.length) children.push(normalPara(details.join(' | '), { indent: true }));
         });
     }
 
@@ -726,7 +714,17 @@ function downloadDOC() {
                 });
             }
             if (p.tech) children.push(subBulletPara(`Tech Stack: ${p.tech}`));
-            if (p.role) children.push(subBulletPara(`Role: ${p.role}`));
+            if (p.role) {
+                const para = new Paragraph({
+                    bullet: { level: 1 },
+                    children: [
+                        new TextRun({ text: 'Role:', bold: true, size: 22, font: 'Times New Roman' }),
+                        new TextRun({ text: ' ' + p.role, size: 22, font: 'Times New Roman' })
+                    ],
+                    spacing: { after: 30 }
+                });
+                children.push(para);
+            }
         });
     }
 
