@@ -1,38 +1,48 @@
 # Resume Builder
 
-A simple, elegant web-based resume builder that helps you create professional resumes in minutes. Fill in your details, see a live preview, and download your resume as PDF or DOC.
+A simple, elegant web‑based resume builder that helps you create professional resumes in minutes. Fill in your details, watch a live preview update in real‑time, and download your resume as PDF or DOCX.
 
 ## Features
 
-- **Live Preview**: See your resume update in real-time as you fill in the form
-- **Multiple Templates**: Choose from templates designed for different needs
-- **Download Options**: Export your resume as PDF or DOC
-- **Photo Upload**: Add a passport-size photo to your resume
-- **Responsive Design**: Works on desktop and mobile devices
+- **Live Preview**: see your resume update as you type
+- **Multiple Templates**: CMRIT‑students layout and a generic freshers layout
+- **Dynamic Sections**: add/remove projects, skills, internships, certifications, extracurriculars, etc.
+- **Links**: supply LinkedIn, GitHub and LeetCode URLs
+- **Photo Upload**: include a passport‑size photo with preview
+- **Download**: export as PDF or DOCX using jsPDF/docx/FileSaver
+- **Responsive**: works on mobile and desktop browsers
+- **No build**: purely HTML/CSS/JS
 
 ## Templates
 
 ### CMRIT Students
-Tailored resume template for CMR Institute of Technology students with:
-- Pre-filled college details
-- Sections for education (college, 12th, 10th)
-- Career objective
-- Skills, projects, and achievements
+
+Template pre‑configured for CMR Institute of Technology students with:
+
+- College details auto‑filled; enter branch, CGPA, year of passing
+- 12th/10th education sections
+- Career objective field
+- Technical skills section with heading/skills pairs
+- Projects (name, description points, tech stack)
+- Internships, certifications, extracurricular activities
+- Personal details: DOB, gender, nationality, permanent address, languages, hobbies
 
 ### Freshers
-General resume template for fresh graduates featuring:
-- Flexible education section (supports PG, UG, 12th, 10th)
-- Profile summary
-- Skills and projects
-- Internships and certifications
+
+Generic fresh‑graduate template that supports:
+
+- Flexible academic blocks (PG, UG, 12th, 10th)
+- Profile summary instead of objective
+- Skills, projects (with role), internships, certifications, extracurriculars
+- Contact info with city/pincode, phone, email, LinkedIn, GitHub, LeetCode
 
 ## Getting Started
 
-1. Clone or download this repository
-2. Open `index.html` in your web browser
-3. Select a template (CMRIT Students or Freshers)
-4. Fill in your details
-5. Download your resume as PDF or DOC
+1. Clone or download this repository  
+2. Open `index.html` in your web browser  
+3. Choose a template  
+4. Fill in your information  
+5. Preview updates live and download your resume
 
 ## Project Structure
 
@@ -51,12 +61,10 @@ Resume_builder/
 
 - HTML5
 - CSS3
-- JavaScript (Vanilla)
+- Vanilla JavaScript
+- jsPDF, docx, FileSaver (CDN)
 
 ## Usage
 
-No installation or build process required. Simply open `index.html` in any modern web browser.
+No installation or build process required. Just open `index.html` in any modern browser.
 
-## License
-
-This project is open source and available for personal and educational use.

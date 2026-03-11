@@ -168,6 +168,13 @@ body {
     color: #222;
     word-break: break-word;
     overflow-wrap: break-word;
+    text-align: justify;               /* justify most text by default */
+}
+
+/* ensure centered elements stay centered */
+.resume-preview .rv-name, 
+.resume-preview .rv-contact {
+    text-align: center !important;
 }
 
 .resume-preview .rv-name {
@@ -195,7 +202,7 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     padding-bottom: 2px;
-    margin: 0 0 6px 0;
+    margin: 0 0 3px 0;                  /* tighter spacing to reduce gap */
     color: #000;
 }
 
@@ -213,13 +220,15 @@ body {
     margin-left: 14px;
     color: #444;
     font-size: 11px;
+    text-align: justify;
 }
 
 .resume-preview .rv-bullet {
     padding-left: 16px;
     position: relative;
-    margin-bottom: 2px;
+    margin-bottom: 1px;                /* reduce gap between bullets and sub-bullets */
     text-indent: 0;
+    text-align: justify;
 }
 
 .resume-preview .rv-bullet::before {
@@ -232,9 +241,10 @@ body {
 .resume-preview .rv-sub-bullet {
     padding-left: 16px;
     position: relative;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
     color: #444;
     margin-left: 16px;
+    text-align: justify;
 }
 
 .resume-preview .rv-sub-bullet::before {
