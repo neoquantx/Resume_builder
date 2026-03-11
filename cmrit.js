@@ -426,7 +426,8 @@ function updatePreview() {
             html += '<div class="rv-bullet"><b>' + esc(p.name) + '</b></div>';
             if (p.descPoints && p.descPoints.length) {
                 p.descPoints.forEach(point => {
-                    html += '<div class="rv-sub-bullet">• ' + esc(point) + '</div>';
+                    // CSS already adds a hollow bullet via ::before
+                    html += '<div class="rv-sub-bullet">' + esc(point) + '</div>';
                 });
             }
             if (p.tech) html += '<div class="rv-sub-bullet"><b>Tech Stack:</b> ' + esc(p.tech) + '</div>';
