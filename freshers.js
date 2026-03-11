@@ -279,12 +279,15 @@ function updatePreview() {
     if (data.leetcode) contactParts.push('<a href="' + esc(data.leetcode) + '">' + esc(data.leetcode) + '</a>');
     if (contactParts.length) {
         html += '<div class="rv-contact" style="text-align:center;">' + contactParts.join(' | ') + '</div>';
+        // divider right after contact line to separate from profile summary
+        html += '<hr class="rv-divider">';
     }
 
     // === PROFILE SUMMARY ===
     if (data.profileSummary) {
         html += '<div class="rv-section-title">PROFILE SUMMARY</div>';
         html += '<div style="text-align: justify;">' + esc(data.profileSummary) + '</div>';
+        html += '<hr class="rv-divider">';
     }
 
     // === ACADEMIC DETAILS ===
@@ -300,6 +303,7 @@ function updatePreview() {
             if (a.year) details.push(esc(a.year));
             if (details.length) html += '<div class="rv-entry-detail">' + details.join(' | ') + '</div>';
         });
+        html += '<hr class="rv-divider">';
     }
 
     // === TECHNICAL SKILLS ===
@@ -329,6 +333,7 @@ function updatePreview() {
                 html += '<div class="rv-bullet"><b>' + lab + ':</b> ' + esc(cs.value) + '</div>';
             });
         }
+        html += '<hr class="rv-divider">';
     }
 
     // === PROJECTS ===
@@ -338,12 +343,13 @@ function updatePreview() {
             html += '<div class="rv-bullet"><b>' + esc(p.title) + '</b></div>';
             if (p.descPoints && p.descPoints.length) {
                 p.descPoints.forEach(point => {
-                    html += '<div class="rv-sub-bullet">• ' + esc(point) + '</div>';
+                    html += '<div class="rv-sub-bullet">' + esc(point) + '</div>';
                 });
             }
             if (p.tech) html += '<div class="rv-sub-bullet"><b>Tech Stack:</b> ' + esc(p.tech) + '</div>';
             if (p.role) html += '<div class="rv-sub-bullet"><b>Role:</b> ' + esc(p.role) + '</div>';
         });
+        html += '<hr class="rv-divider">';
     }
 
     // === CO-CURRICULAR & EXTRA-CURRICULAR ===
@@ -353,6 +359,7 @@ function updatePreview() {
         if (data.hackathons) html += '<div class="rv-bullet">Hackathons: ' + esc(data.hackathons) + '</div>';
         if (data.certifications) html += '<div class="rv-bullet">Certifications: ' + esc(data.certifications) + '</div>';
         if (data.patents) html += '<div class="rv-bullet">Patents/Publications: ' + esc(data.patents) + '</div>';
+        html += '<hr class="rv-divider">';
     }
 
     // === LEADERSHIP SKILLS ===
@@ -361,6 +368,7 @@ function updatePreview() {
         data.leadership.forEach(l => {
             html += '<div class="rv-bullet">' + esc(l) + '</div>';
         });
+        html += '<hr class="rv-divider">';
     }
 
     // === ACHIEVEMENTS ===
@@ -369,6 +377,7 @@ function updatePreview() {
         data.achievements.forEach(a => {
             html += '<div class="rv-bullet">' + esc(a) + '</div>';
         });
+        html += '<hr class="rv-divider">';
     }
 
     el.innerHTML = html;
