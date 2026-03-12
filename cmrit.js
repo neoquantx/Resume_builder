@@ -322,18 +322,16 @@ function updatePreview() {
 
     let html = '';
 
-    // === HEADER: Name ===
-    if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName.toUpperCase()) + '</div>';
-
-    // === CONTACT + PHOTO (parallel) ===
+    // === HEADER: Name + Contacts LEFT, Photo RIGHT ===
     html += '<div class="rv-contact-photo-wrapper">';
     html += '<div class="rv-contacts">';
-    if (data.address) html += '<div class="rv-contact"><b>Address</b>: ' + esc(data.address) + '</div>';
-    if (data.phone) html += '<div class="rv-contact"><b>Mobile Number</b>: ' + esc(data.phone) + '</div>';
+    if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName.toUpperCase()) + '</div>';
+    if (data.address) html += '<div class="rv-contact"><b>Address:</b> ' + esc(data.address) + '</div>';
+    if (data.phone) html += '<div class="rv-contact"><b>Mobile Number:</b> ' + esc(data.phone) + '</div>';
     if (data.email) html += '<div class="rv-contact"><b>Email Id</b>: ' + esc(data.email) + '</div>';
-    if (data.linkedin) html += '<div class="rv-contact"><b>LinkedIn</b>: <a href="' + esc(data.linkedin) + '">' + esc(data.linkedin) + '</a></div>';
-    if (data.github) html += '<div class="rv-contact"><b>GitHub</b>: <a href="' + esc(data.github) + '">' + esc(data.github) + '</a></div>';
-    if (data.leetcode) html += '<div class="rv-contact"><b>LeetCode</b>: <a href="' + esc(data.leetcode) + '">' + esc(data.leetcode) + '</a></div>';
+    if (data.linkedin) html += '<div class="rv-contact"><b>LinkedIn:</b> <a href="' + esc(data.linkedin) + '">' + esc(data.linkedin) + '</a></div>';
+    if (data.github) html += '<div class="rv-contact"><b>GitHub:</b> <a href="' + esc(data.github) + '">' + esc(data.github) + '</a></div>';
+    if (data.leetcode) html += '<div class="rv-contact"><b>LeetCode:</b> <a href="' + esc(data.leetcode) + '">' + esc(data.leetcode) + '</a></div>';
     html += '</div>';
     if (data.photo) {
         html += '<img class="rv-photo" src="' + data.photo + '" alt="Photo">';
@@ -346,8 +344,8 @@ function updatePreview() {
     if (data.objective) {
         html += '<div class="rv-section-title">CAREER OBJECTIVE</div>';
         html += '<div class="rv-objective" style="text-align: justify;">' + esc(data.objective) + '</div>';
-        html += '<hr class="rv-divider">';
     }
+    if (data.objective) html += '<hr class="rv-divider">';
 
     // === EDUCATION ===
     const hasEdu = data.college || data.school12 || data.school10;
@@ -384,6 +382,7 @@ function updatePreview() {
             if (d10Extra.length) html += '<div class="rv-sub-bullet">' + d10Extra.join(', ') + '</div>';
         }
     }
+    if (hasEdu) html += '<hr class="rv-divider">';
 
     // === TECHNICAL SKILLS ===
     const tech = data.tech || {};
@@ -418,6 +417,7 @@ function updatePreview() {
             });
         }
     }
+    if (hasStaticTech || hasDynamic || hasCustom) html += '<hr class="rv-divider">';
 
     // === PROJECTS ===
     if (data.projects.length) {
@@ -433,6 +433,7 @@ function updatePreview() {
             if (p.tech) html += '<div class="rv-sub-bullet"><b>Tech Stack:</b> ' + esc(p.tech) + '</div>';
         });
     }
+    if (data.projects.length) html += '<hr class="rv-divider">';
 
     // === INTERNSHIPS ===
     if (data.internships.length) {
@@ -443,6 +444,7 @@ function updatePreview() {
             if (i.desc) html += '<div class="rv-sub-bullet">' + esc(i.desc) + '</div>';
         });
     }
+    if (data.internships.length) html += '<hr class="rv-divider">';
 
     // === CERTIFICATIONS ===
     if (data.certifications.length) {
@@ -451,6 +453,7 @@ function updatePreview() {
             html += '<div class="rv-bullet">' + esc(c.name) + (c.org ? ' — ' + esc(c.org) : '') + '</div>';
         });
     }
+    if (data.certifications.length) html += '<hr class="rv-divider">';
 
     // === EXTRACURRICULAR ===
     if (data.extracurricular.length) {
@@ -459,6 +462,7 @@ function updatePreview() {
             html += '<div class="rv-bullet">' + esc(e.activity) + (e.role ? ' — ' + esc(e.role) : '') + '</div>';
         });
     }
+    if (data.extracurricular.length) html += '<hr class="rv-divider">';
 
     // === PERSONAL DETAILS ===
     const hasPersonal = data.dob || data.gender || data.nationality || data.permanentAddress || data.linguisticCompetency || data.hobbies;
@@ -471,6 +475,7 @@ function updatePreview() {
         if (data.linguisticCompetency) html += '<div class="rv-labeled"><span class="rv-label">Linguistic Competency</span><span>: ' + esc(data.linguisticCompetency) + '</span></div>';
         if (data.hobbies) html += '<div class="rv-labeled"><span class="rv-label">Hobbies</span><span>: ' + esc(data.hobbies) + '</span></div>';
     }
+    if (hasPersonal) html += '<hr class="rv-divider">';
 
     el.innerHTML = html;
 }

@@ -174,7 +174,7 @@ body {
 /* ensure centered elements stay centered */
 .resume-preview .rv-name, 
 .resume-preview .rv-contact {
-    text-align: center !important;
+    text-align: left;
 }
 
 .resume-preview .rv-name {
@@ -275,6 +275,7 @@ body {
     display: flex;
     gap: 16px;
     align-items: flex-start;
+    justify-content: space-between;
 }
 
 .resume-preview .rv-contacts {
