@@ -310,6 +310,19 @@ function esc(str) {
     return div.innerHTML;
 }
 
+function formatEmailLinks(emailValue) {
+    const emails = emailValue
+        .split('/')
+        .map(email => email.trim())
+        .filter(Boolean);
+
+    if (!emails.length) return '';
+
+    return emails
+        .map(email => '<a href="mailto:' + encodeURIComponent(email) + '">' + esc(email) + '</a>')
+        .join(' / ');
+}
+
 function updatePreview() {
     const data = collectData();
     const el = document.getElementById('resumePreview');
@@ -328,7 +341,7 @@ function updatePreview() {
     if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName.toUpperCase()) + '</div>';
     if (data.address) html += '<div class="rv-contact"><b>Address:</b> ' + esc(data.address) + '</div>';
     if (data.phone) html += '<div class="rv-contact"><b>Mobile Number:</b> ' + esc(data.phone) + '</div>';
-    if (data.email) html += '<div class="rv-contact"><b>Email Id</b>: ' + esc(data.email) + '</div>';
+    if (data.email) html += '<div class="rv-contact"><b>Email Id</b>: ' + formatEmailLinks(data.email) + '</div>';
     if (data.linkedin) html += '<div class="rv-contact"><b>LinkedIn:</b> <a href="' + esc(data.linkedin) + '">' + esc(data.linkedin) + '</a></div>';
     if (data.github) html += '<div class="rv-contact"><b>GitHub:</b> <a href="' + esc(data.github) + '">' + esc(data.github) + '</a></div>';
     if (data.leetcode) html += '<div class="rv-contact"><b>LeetCode:</b> <a href="' + esc(data.leetcode) + '">' + esc(data.leetcode) + '</a></div>';
