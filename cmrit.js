@@ -336,9 +336,9 @@ function updatePreview() {
     let html = '';
 
     // === HEADER: Name + Contacts LEFT, Photo RIGHT ===
+    if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName.toUpperCase()) + '</div>';
     html += '<div class="rv-contact-photo-wrapper">';
     html += '<div class="rv-contacts">';
-    if (data.fullName) html += '<div class="rv-name">' + esc(data.fullName.toUpperCase()) + '</div>';
     if (data.address) html += '<div class="rv-contact"><b>Address:</b> ' + esc(data.address) + '</div>';
     if (data.phone) html += '<div class="rv-contact"><b>Mobile Number:</b> ' + esc(data.phone) + '</div>';
     if (data.email) html += '<div class="rv-contact"><b>Email Id</b>: ' + formatEmailLinks(data.email) + '</div>';
@@ -491,6 +491,12 @@ function updatePreview() {
     if (hasPersonal) html += '<hr class="rv-divider">';
 
     el.innerHTML = html;
+
+    const contactsEl = el.querySelector('.rv-contacts');
+    const photoEl = el.querySelector('.rv-photo');
+    if (contactsEl && photoEl) {
+        photoEl.style.height = Math.max(40, contactsEl.offsetHeight - 2) + 'px';
+    }
 }
 
 
@@ -566,13 +572,13 @@ function downloadPDF() {
 
     // ===== Header: Name + Photo =====
     const photoWidth = 30;
-    const photoHeight = 36;
 
     doc.setFontSize(16);
     doc.setFont('times', 'bold');
     doc.text(data.fullName.toUpperCase(), margin, y);
     const nameStartY = y;
     y += 6;
+    const contactsStartY = y;
 
     if (data.address) addLabeledLine('Address:', data.address);
     if (data.phone) addLabeledLine('Mobile Number:', data.phone);
@@ -611,15 +617,19 @@ function downloadPDF() {
         y += 5;
     }
 
+    const contactsEndY = y;
+
     if (data.photo) {
         try {
-            doc.addImage(data.photo, 'JPEG', pageWidth - margin - photoWidth, nameStartY - 5, photoWidth, photoHeight);
+            const photoHeight = Math.max(24, contactsEndY - contactsStartY - 1);
+            const photoY = contactsStartY;
+            doc.addImage(data.photo, 'JPEG', pageWidth - margin - photoWidth, photoY, photoWidth, photoHeight);
         } catch (e) {
             console.warn('Could not add photo to PDF:', e);
         }
     }
 
-    y = Math.max(y, nameStartY - 5 + photoHeight) + 5;
+    y += 5;
 
     // CAREER OBJECTIVE
     if (data.objective) {
